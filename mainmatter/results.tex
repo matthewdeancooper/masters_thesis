@@ -1,5 +1,6 @@
 \chapter{Results and discussion}
 \label{ch:results}
+\todo{Results and Discussion}
 
 \section{Model 1: Pelvic imaging}
 A total of 5 loss functions were assessed for ability to train a 2D U-net with a small dataset. As seen in Table \ref{table:loss_prostate}, dice similarity coefficient (DSC), precision and sensitivity metrics were recorded on an independent test dataset to measure model generalisability for each loss. Binary cross entropy (BCE) is a pixel-wise similarity measure \cite{Bertels2019}, and achieved the strongest scores with a DSC of 0.996, precision of 0.999, and sensitivity of 0.991. Patient contouring under BCE was excellent, with an average organ specific DSC of 0.996; however, BCE failed to produce any positive predictions for the rectum, and only large bladder examples were identified - likely due to the built-in assumption that classes are balanced \cite{Ronneberger_2015}. Reports have indicated that BCE has sub-optimal performance on class imbalanced data \cite{taghanaki2018}; however, large bladder examples were contoured accurately (see Figure \ref{fig:prostate_BCE_bladder}).  
