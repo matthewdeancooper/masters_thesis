@@ -1,13 +1,33 @@
-\chapter{Abstract}
-\label{ch:abstract}
+\chapter{Abstract} \label{ch:abstract}
 
-\textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective treatment delivery in radiotherapy (RT). Current limitation in clinical practice include:\todo{is this punctuation correct here?} Large inter and intra-observer variances, as well time delays in both contour generation and correction - that act as barriers to the implementation of adaptive RT\todo{This feels like you're introducing a list, but there is only one item in it...}. This study designs and evaluates a 2D U-net\todo{U-Net?} architecture with two primary aims: 1) Develop a pelvic imaging quality assurance tool for use in RT, comparing model predictions with expert contours. 2) Automate vacuum bag segmentation for canine RT.
+\textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective
+treatment delivery in radiotherapy (RT). Current limitation in clinical practice
+include large intra and inter-observer variances (IOV), as well time delays in
+both contour generation and correction, acting as barriers to the implementation
+of adaptive RT. This study designed and evaluated a 2D U-Net architecture with
+two primary aims: 1) Develop a pelvic imaging quality assurance tool for use in
+RT, comparing model predictions with expert contours. 2) Automate vacuum bag
+segmentation for canine RT.
 
-\textbf{Method:}
- We present two independently trained models in this study, and assess the performance of common semantic segmentation loss functions in each case. We expand on the original architecture developed by Ronneberger et al. by integrating recent network modifications that have shown improved performance in the literature. In addition to reporting dice similarity (DSC), we utilise organ-specific tolerances representative of expert IOV for the bladder and rectum as parameters in Nikolov et al's surface dice similarity coefficient (sDSC).
+\textbf{Method:} We present two independently trained models in this study, and
+assess the performance of common semantic segmentation loss functions in each
+case. We expand on the original architecture developed by Ronneberger et al. by
+integrating recent network modifications that indicated improved performance in
+the literature. In addition to reporting dice similarity coefficients (DSC), we
+utilise organ-specific tolerances representative of expert IOV for the bladder
+and rectum as parameters in Nikolov et al's surface dice similarity coefficient
+(sDSC).
 
-\textbf{Results:}
-3 \todo{Three} contours were produced from pelvic imaging CT scans: Patient contours were measured with mean DSC 0.99(0.01)\todo{No sDSC?}, bladder contours with mean DSC 0.86(0.22) and mean\todo{No need to repeat `mean' here} sDSC 0.87(0.18), and rectum contours with mean\todo{nor here} DSC 0.67(0.12) and mean sDSC 0.92(0.14). Additionally, vacuum bag contours from canine imaging CT scans were measured with mean DSC 0.95(0.01)\todo{sDSC?}. Weighted DSC was the only loss function that optimised for all organs considered in pelvic imaging - due to a significant class imbalance \todo{class imbalance `by relative contour pixel volume'?}.
+\textbf{Results:} Three contours were produced from pelvic imaging CT scans:
+Patient contours were measured with DSC 0.99(0.01), bladder contours with
+DSC 0.86(0.22) and sDSC 0.87(0.18), and rectum contours with DSC 0.67(0.12)
+and sDSC 0.92(0.14).  Additionally, vacuum bag contours from canine imaging CT
+scans were measured with DSC 0.95(0.01). Weighted DSC was the only loss function
+that optimised for all organs considered in pelvic imaging - due to a
+significant pixel-wise class imbalance between structures.
 
-\textbf{Conclusion:}
-Patient contours were excellent\todo{``Excellent" -- not scientific language. Instead something like "Patient contours did not deviate outside tolerances and are viable for use within the QA tool in their current form"}. We\todo{Would ``it is suspected" be better here?} suspect a broader dataset may improve bladder and rectum segmentations (19 patient scans were used). The vacuum bag model should proceed to acceptance testing for clinical implementation.
+\textbf{Conclusion:} Patient contours did not deviate outside tolerances and are
+viable for use within the QA tool in their current form.  Bladder and rectum
+segmentation may improve with a broader dataset (19 patient scans were used).
+The vacuum bag model should proceed to acceptance testing for clinical
+implementation.
