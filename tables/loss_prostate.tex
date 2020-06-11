@@ -1,0 +1,27 @@
+\begin{table}[H]
+\footnotesize
+\caption{Loss evaluation on independent test dataset for pelvic imaging}
+% title of Table
+\centering
+% used for centering table
+\begin{tabular}{c c c c}
+% centered columns (4 columns)
+\hline\hline
+%inserts double horizontal lines
+Loss & DSC & Precision & Sensitivity \\ [0.5ex]
+% inserts table
+%heading
+\hline
+% inserts single horizontal line
+BinaryCrossentropy (BCE) & 0.995 & 0.999 & 0.991 \\
+soft DSC & 0.986 & 0.999 & 0.972 \\
+\textbf{w. soft DSC} & \textbf{0.994} & \textbf{0.997} & \textbf{0.991} \\
+BCE + 2(w. soft DSC) & 0.985 & 0.999 & 0.971 \\
+FocalTversky & 0.962 & 0.941 & 0.987 \\
+% [1ex] adds vertical space
+\hline\hline
+%inserts single line
+\end{tabular}
+\label{table:loss_prostate}
+% is used to refer this table in the text
+\end{table}

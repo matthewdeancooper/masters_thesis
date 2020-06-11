@@ -1,0 +1,79 @@
+* main
+  :PROPERTIES:
+  :NOTER_DOCUMENT: main.pdf
+  :END:
+  - 30 (min) - 40 (max) pages
+  - Appendix not examined
+  - 12pt font
+  - Times, Times New Roman, or Arial
+  - Single line spacing
+  - Page numbers
+  - >= 20mm page margins
+
+** Front matter (up to 4 pages count to limit)
+*** DONE Title page (p1)
+    CLOSED: [2020-04-18 Sat 20:07]
+    - State "DONE"       from "TODO"       [2020-04-18 Sat 20:07]
+*** TODO Abstract (100-200w) (p2)
+*** TODO Statement page (p3 up to p4)
+**** Statement of originality
+     - signed and dated
+     - I certify that this report contains work carried out by myself except
+       where otherwise acknowledged.
+**** Acknowledgements
+**** Statement of contribution (can be separate page - but then not counted in limit)
+*** TODO Table of contents (p4/5 - if longer only page counts to limit )
+*** DONE List of figures, tables, abbreviations (not included in limit) - AUTOMATED
+    CLOSED: [2020-04-18 Sat 20:07]
+    - State "DONE"       from "TODO"       [2020-04-18 Sat 20:07]
+** Main matter (35 pages max) 
+*** TODO 1 Introduction (approx 1-2 pages)
+    - Background
+      - Percentage of cancer patient receiving RT
+      - The fundamental trade-off in RT
+      - Contouring - define wrt. the F.T.O.R.T
+    - Motivation
+      - Current limitations in contouring and opportunity if improved
+    - Rationale of the project
+      - Open source implantation of existing strategy
+      - Goals of clinical implementation
+*** TODO 2 Literature (MAX 8 pages inc. figures, 4-8)
+    - Comprehensive review of literature associated with project
+      - Current solutions (atlas based) + pros and cons
+      - The rise of deep learning in image segmentation
+        - CNNs,
+      - U -net architecture (and pro's over CNN)
+      - Clinical challenges wrt. model and addressing limitations
+      - The need for data and Image augmentation
+      - Loss functions for image segmentation
+*** TODO 3 Theory - (of ML) (5 pages)
+    - Rule 0: No magic 
+      - Setting up the problem
+      - Algorithm for deep learning
+      - Stochastic gradient descent
+    - Convolution layers 
+    - Pooling layers
+    - Skip layers
+    - sDSC (open-source library) cf. vDSC
+*** TODO 4 Method (5)
+    - Explain experimental procedure (ie. architecture in detail)
+    - Measuring expert variation - organ specific tolerances
+    - Data set used
+    - Top-k loss to account for class imbalance
+    - Sigmoid final activation due to non-mutually exclusive nature
+    - Code API and behind the scenes
+    - sDSC and sDSC aggregate per patient
+*** TODO 5 Results (5)
+    - Qualitative performance
+    - Quantitative performance
+*** TODO 6 Discussion (5)
+    - Comparison with previous results in literature
+    
+*** TODO 7 Conclusion (1)
+    - Build on project to allows for implementation of the core software into
+      two use cases
+    - Further research to quantify the dosimetric impact of our contouring on patients
+    - Further research to quantify the time saving by implementation
+** Back matter (1 page max)
+*** TODO References (1 page count)
+*** TODO Appendix (not assessed or included in limit)

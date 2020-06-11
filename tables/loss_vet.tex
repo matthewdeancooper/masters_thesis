@@ -1,0 +1,25 @@
+\begin{table}[H]
+\footnotesize
+\caption{Loss evaluation on independent test dataset for canine imaging}
+% title of Table
+\centering
+% used for centering table
+\begin{tabular}{c c c c}
+% centered columns (4 columns)
+\hline\hline
+%inserts double horizontal lines
+Loss & DSC & Precision & Sensitivity \\ [0.5ex]
+% inserts table
+%heading
+\hline
+% inserts single horizontal line
+BinaryCrossentropy & 0.901 & 0.935 & 0.954 \\
+\textbf{soft DSC} & \textbf{0.952} & \textbf{0.953} & \textbf{0.953} \\
+FocalTversky & 0.930 & 0.906 & 0.969 \\
+% [1ex] adds vertical space
+\hline\hline
+%inserts single line
+\end{tabular}
+\label{table:loss_vet}
+% is used to refer this table in the text
+\end{table}
