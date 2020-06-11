@@ -1,7 +1,7 @@
 \chapter{Abstract}
 \label{ch:abstract}
 
-\textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective treatment delivery in radiotherapy (RT). Current limitation in clinical practice include: Large inter and intra-observer variances, as well time delays in both contour generation and correction - that act as barriers to the implementation of adaptive RT. This study designs and evaluates a 2D U-net architecture with two primary aims: 1) Develop a pelvic imaging quality assurance tool for use in RT, comparing model predictions with expert contours. 2) Automate vacuum bag segmentation for canine RT.
+\textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective treatment delivery in radiotherapy (RT). Current limitation in clinical practice include:  Large inter and intra-observer variances, as well time delays in both contour generation and correction - that act as barriers to the implementation of adaptive RT. This study designs and evaluates a 2D U-net architecture with two primary aims: 1) Develop a pelvic imaging quality assurance tool for use in RT, comparing model predictions with expert contours. 2) Automate vacuum bag segmentation for canine RT.
 
 \textbf{Method:}
  We present two independently trained models in this study, and assess the performance of common semantic segmentation loss functions in each case. We expand on the original architecture developed by Ronneberger et al. by integrating recent network modifications that have shown improved performance in the literature. In addition to reporting dice similarity (DSC), we utilise organ-specific tolerances representative of expert IOV for the bladder and rectum as parameters in Nikolov et al's surface dice similarity coefficient (sDSC).
