@@ -1,6 +1,5 @@
-\chapter{Results and discussion}
+\chapter{Results and Discussion}
 \label{ch:results}
-\todo{Results and Discussion}
 
 \section{Model 1: Pelvic imaging}
 A total of 5 loss functions were assessed for ability to train a 2D U-Net with a small dataset. As seen in Table \ref{table:loss_prostate}, dice similarity coefficient (DSC), precision and sensitivity metrics were recorded on an independent test dataset to measure model generalisability for each loss. Binary cross entropy (BCE) is a pixel-wise similarity measure \cite{Bertels2019},
@@ -23,8 +22,7 @@ Focal Tversky loss (see \cite{Khan2019}) exceeded both BCE and the combination l
 
 \input{tables/loss_prostate}
 
-Our final model for pelvic imaging was selected at the 140th epoch, under weighted soft DSC. As seen in Figure \ref{fig:prostate_metrics}, validation loss plateaued at 130 epochs, with DSC value reaching a maximum at 140 epochs. We note that although a smoothed representation of loss for both validation and training data would be monotonically decreasing, this is not the case for DSC, precision, and sensitivity metrics. In section \ref{ch:method-architecture} we noted the use of BCE weight initialisation; after switching from BCE to weighted soft DSC, there is a significant change in loss topology. Examination of early model predictions after BCE initialisation indicated a change in state from placing minimal significance on bladder and rectum cases, to now having gradients dominated by changes to these organs under weighted soft DSC. It is likely that feature representation were subsequently perturbed significantly to minimise the new loss - temporarily decreasing DSC and precision. A similar pattern emerged for DSC value under Focal Tversky; however, the initial DSC value is comparatively lower than under weighted soft DSC - indicating that convergence after 3
-\todo{three}
+Our final model for pelvic imaging was selected at the 140th epoch, under weighted soft DSC. As seen in Figure \ref{fig:prostate_metrics}, validation loss plateaued at 130 epochs, with DSC value reaching a maximum at 140 epochs. We note that although a smoothed representation of loss for both validation and training data would be monotonically decreasing, this is not the case for DSC, precision, and sensitivity metrics. In section \ref{ch:method-architecture} we noted the use of BCE weight initialisation; after switching from BCE to weighted soft DSC, there is a significant change in loss topology. Examination of early model predictions after BCE initialisation indicated a change in state from placing minimal significance on bladder and rectum cases, to now having gradients dominated by changes to these organs under weighted soft DSC. It is likely that feature representation were subsequently perturbed significantly to minimise the new loss - temporarily decreasing DSC and precision. A similar pattern emerged for DSC value under Focal Tversky; however, the initial DSC value is comparatively lower than under weighted soft DSC - indicating that convergence after three
 epochs of BCE is likely sensitive to randomly sampled weight initialisation \cite{Ronneberger_2015}. Total inference time per patient was approximately 3 seconds.
 
 \begin{figure}[H]
@@ -68,7 +66,7 @@ In Figure \ref{fig:prostate_bladder}, weighted soft DSC underestimated the poste
 	\end{center}
 \end{figure}
 
-Model 1 under weighted soft DSC was unable to identify rectum contours containing hollow regions (see Figure \ref{fig:prostate_rectum} D). We suspect further training on a distribution of similar cases may improve performance. All other cases in the test dataset were correctly identified. As seen in Figure \ref{fig:prostate_rectum} and Table \ref{table:organ}, DSC values for rectum contours were lower on average when compared to the bladder - consistent with expert IOV \cite{CITATION}\todo[color=red!40]{Cite} and other models in the literature \cite{CITATION}\todo[color=red!40]{Cite}. However, a higher surface dice similarity coefficient (sDSC) indicated that the degree of correction required for rectum contours was lower than corrections required for bladder contours.
+Model 1 under weighted soft DSC was unable to identify rectum contours containing hollow regions (see Figure \ref{fig:prostate_rectum} D). We suspect further training on a distribution of similar cases may improve performance. All other cases in the test dataset were correctly identified. As seen in Figure \ref{fig:prostate_rectum} and Table \ref{table:organ}, DSC values for rectum contours were lower on average when compared to the bladder - consistent with expert IOV \cite{CITATION} and other models in the literature \cite{CITATION}. However, a higher sDSC indicated that the degree of correction required for rectum contours was lower than corrections required for bladder contours.
 \todo{Is this really true? Did you ever fix that issue where empty slices are changed from returning NaN to instead return 0? On the rectum there are whole slices where the contour needs to be drawn from scratch\ldots}
 
 
@@ -82,9 +80,7 @@ Model 1 under weighted soft DSC was unable to identify rectum contours containin
 
 \section{Model 2: Canine imaging}
 
-3
-\todo{Three}
-loss functions were attempted for vacuum bag segmentation in canine imaging, as seen in Table \ref{table:loss_vet}. Soft DSC outperformed both BCE and focal Tversky on DSC and precision values. Focal Tversky had the highest sensitivity (0.969) as expected \cite{Khan2019}, with BCE second (0.954). The final model was selected at 100 epochs under soft DSC loss. Representative model output is presented in Figure \ref{fig:vet_vacbag}. Soft DSC loss showed excellent agreement with ground truth vacuum bag contours - and was able to handle both negative (E) and small contour (B) examples in the test dataset (see Figure \ref{fig:vet_vacbag}).
+Three loss functions were attempted for vacuum bag segmentation in canine imaging, as seen in Table \ref{table:loss_vet}. Soft DSC outperformed both BCE and focal Tversky on DSC and precision values. Focal Tversky had the highest sensitivity (0.969) as expected \cite{Khan2019}, with BCE second (0.954). The final model was selected at 100 epochs under soft DSC loss. Representative model output is presented in Figure \ref{fig:vet_vacbag}. Soft DSC loss showed excellent agreement with ground truth vacuum bag contours - and was able to handle both negative (E) and small contour (B) examples in the test dataset (see Figure \ref{fig:vet_vacbag}).
 
 \input{tables/loss_vet}
 
@@ -98,9 +94,7 @@ loss functions were attempted for vacuum bag segmentation in canine imaging, as 
 	\end{center}
 \end{figure}
 
-Typically, we expect training metric values to overstate a model's predictive capacity, as parameter values are updated to fit the training data distribution. However, in Figure \ref{fig:vet_metrics} we see that at many stages, validation loss was lower than training loss.
-\todo{It might also be worth mention that it also may be possible that this is just a statistical anomaly due to the small data set, for example, the randomly chosen dataset for final testing may have been a very ``average'' dog\ldots who knows. I think it's dialing back on the certainty here and mentioning that it could be those cases as noted in the literature, but it also could simply be an artefact of the patient data splitting and the small sample sizes. ...ah I jumped ahead. That was your point number 2 :)}
-The literature states two possible contributing factors: 1) Dropout layers regularise only on the training data, and hence the full architecture is only available for inference on the validation and testing sets \cite{srivastava2014}. Additionally, batch normalisation parameters are tuned to normalise activations on the test dataset - and are fixed during validation and testing \cite{CITATION}\todo[color=red!40]{Cite}. 2) Due to the small dataset used in this study, variation in the validation set may itself be small compared to the training data; hence, if the validation distribution is centred about the mean of the training data, the validation dataset would be relatively `easier' to infer \cite{CITATION}\todo[color=red!40]{Cite}. We note that although Tversky loss continued to decrease for both the training and validation sets over the epochs tested, a DSC validation plateau (see oscillation in Figure \ref{fig:vet_metrics} C)) triggered early stopping.
+Typically, we expect training metric values to overstate a model's predictive capacity, as parameter values are updated to fit the training data distribution. However, in Figure \ref{fig:vet_metrics} we see that at many stages, validation loss was lower than training loss. The literature states two possible contributing factors: 1) Dropout layers regularise only on the training data, and hence the full architecture is only available for inference on the validation and testing sets \cite{srivastava2014}. Additionally, batch normalisation parameters are tuned to normalise activations on the test dataset - and are fixed during validation and testing \cite{CITATION}. 2) Due to the small dataset used in this study, variation in the validation set may itself be small compared to the training data; hence, if the validation distribution is centred about the mean of the training data, the validation dataset would be relatively `easier' to infer \cite{CITATION}. We note that although Tversky loss continued to decrease for both the training and validation sets over the epochs tested, a DSC validation plateau (see oscillation in Figure \ref{fig:vet_metrics} C)) triggered early stopping.
 
 \begin{figure}[H]
 	\begin{center}
@@ -127,11 +121,11 @@ However, experts have been reported to acheive similarities much higher than thi
 
 State-of-the-art U-Net implementations have recently been able to achieve DSC values of 0.95 and 0.92 for the bladder and rectum, respectively \cite{Kazemifar_2018}. However, 85 CT patient scans were included in this dataset, compared to the 16 included in our study. We suspect that increasing the number of patients in our study would lead to higher generalisability in model performance (reported to scale logarithmically with dataset size \cite{Nemoto_2020}) as well as provide a broader validation and test distribution - improving the reliability and robustness of performance metrics \cite{Ronneberger_2015}. 
 
-Model 2 produced vacuum bag contours with an average DSC of 0.952 and MSD of 0.175 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}\todo[color=red!40]{Cite}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is
+Model 2 produced vacuum bag contours with an average DSC of 0.952 and MSD of 0.175 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is
 \todo{wording}
 dose distribution under contours produced by this model - and a potential time saving of 30 minutes per patient. Dose shift has yet to be assessed  in clinic - however, we suggest that comparing dose volume histograms between model and expert contours under an identical treatment plan could provide a quantitative measure of clinical acceptability.
 \todo{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
-If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients \cite{CITATION}\todo[color=red!40]{Cite}.
+If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients \cite{CITATION}.
 
 \input{tables/metrics}
 

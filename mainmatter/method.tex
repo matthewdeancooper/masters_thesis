@@ -5,9 +5,8 @@
 \label{ch:method-dataset}
 This project focused on building an automated segmentation solution for radiotherapy. Two applications were targeted: A multi-organ segmentation model for pelvic imaging (with patient, bladder and rectum contouring); and a single structure model for vacuum bag contouring in canine imaging. Anonymised pelvic imaging data was provided by Riverina Cancer Care Centre from active prostate cancer RT patients over multiple stages of treatment. Canine imaging data was provided by the Small Animal Specialists Hospital (SASH) and contained variable cancer locations and patient orientations. All input data consisted of raw diagnostic CT images acquired with a 512 x 512 matrix. Pelvic imaging scans were comprised of 1.37 mm x 1.37 mm x 2 mm voxels; while canine imaging scans contained variable spacings across patients, with an average voxel size of 0.85 mm x 0.85 mm x 1.91 mm.
 
-Patient scans were converted from a propriety Monaco format (.WC files)
-\todo{Did you actually do this? Or do you mean instead ``plans were exported from the TPS in DICOM format''?}
-to DICOM files, from which image-structure pairs were extracted, transformed from patient-space to a non-dimensional matrix-space, and saved individually as model input-output arrays for further processing. Initial modelling was attempted with contours extracted on-the-fly from DICOM files; however, this resulted in a significant CPU bottleneck which limited GPU capacity during training.
+Patient scans were exported from a the Monaco treatment planning system
+to DICOM format, from which image-structure pairs were extracted, transformed from patient-space to a non-dimensional matrix-space, and saved individually as model input-output arrays for further processing. Initial modelling was attempted with contours extracted on-the-fly from DICOM files; however, this resulted in a significant CPU bottleneck which limited GPU capacity during training.
 \todo{This could have been fixed by caching your transformations to disk. You have essentially implemented this, it's just that if it was in the cache model philosophy the model would see a DICOM file, check to see if it exist in memory, if not, check to see if it has a numpy conversion of it saved to disk, if not, then it would do the conversion, save the numpy result to disk, and store it in memory. Next time that file is needed, it would either find in memory, or if not there, saved to disk in its numpy format. In the code's current format you've essentially implemented a manual cache without supporting the original DICOM input within your pipeline.}
 In addition, any advantage of removing the intermediate file processing step (DICOM to array) was made redundant upon determining that significant data cleaning would be required for contour consistency.
 \todo{There might be value in changing philosophy here going forwards. SASH could go through their contours within the TPS and on any slice where they are not happy with all the contours on that slice they could create a placeholder contour with the name ``ignore-this-slice'' or something equivalent. Then, that puts the ownus of datacleaning on SASH, and they can use the TPS GUI in the format they understand. Then, all your pipeline needs to do, is check a given slice to see if the ``ignore-this-slice'' exists on there. If it does, don't use that slice in your model. This method also provides an easy way for other centres to use their current data within your model. Instead of having them use custom unfamiliar software to clean the data, or require them to completely contour every slice in every exported image, just get them to add this dummy contour within their software of choice to the slices that are to be ignored.}
@@ -57,7 +56,7 @@ of pixel-wise binary classification on anatomic structures (i.e. a voxel can bel
 	\end{center}
 \end{figure}
 
-The model was trained using the Adam (Adaptive momentum estimation) optimisation algorithm \cite{kingma2014} with an initial learning rate of $10^{-5}$, a batch size of 1 for pelvic imaging, and 3 for canine imaging. Model training was scheduled to conclude when validation loss had not improved for a period of 20 epochs. In addition, learning rate decay was triggered by a validation loss plateau period of 3 epochs. Initial model weights were determined via `He' kernel initialisation), which samples from a zero mean Gaussian distribution with variance $\sigma=\sqrt{2/N}$ (as in Ronneberger et al \cite{Ronneberger_2015}), where N is the incoming nodes for a single activation (i.e. for n x n convolution over M feature maps, N = n x n x M). In addition, we accelerate training for pelvic imaging by adopting the strategy of Bertels et. al to further initialising model parameters via 3 epochs of training with binary cross entropy.
+The model was trained using the Adam (Adaptive momentum estimation) optimisation algorithm \cite{kingma2014} with an initial learning rate of $10^{-5}$, a batch size of 1 for pelvic imaging, and 3 for canine imaging. Model training was scheduled to conclude when validation loss had not improved for a period of 20 epochs. In addition, learning rate decay was triggered by a validation loss plateau period of 3 epochs. Initial model weights were determined via `He' kernel initialisation), which samples from a zero mean Gaussian distribution with variance $\sigma=\sqrt{2/N}$ (as in Ronneberger et al \cite{Ronneberger_2015}), where N is the incoming nodes for a single activation (i.e. for n x n convolution over M feature maps, N = n x n x M). In addition, we accelerate training for pelvic imaging by adopting the strategy of Bertels et al. to further initialising model parameters via 3 epochs of training with binary cross entropy.
 
 
 
@@ -69,11 +68,9 @@ Calculations for weighted soft DSC were performed via equation \ref{eq:method_ws
 \todo{Is it appropriate to include a footnote with link to a specific commit hash (so future moving of stuff doesn't break the link), for example https://github.com/pymedphys/pymedphys/tree/9ef43ae/examples/protyping/pymedphys-segmentation}
 
 \begin{equation}
-w. \, soft \, DSC = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
+\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
 \label{eq:method_wsdsc}
 \end{equation}
-
-\todo{I would recommend using textrm command here -- $\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}$}
 
 \begin{equation}
 W = (W_{1}, ..., W_{n}) \; \; \textbf{:} \; \; W_{k} = \frac{\sum_{k=1}^{n} |t_{k} |}{t_{k} + \epsilon}
@@ -93,6 +90,5 @@ U = (U_{1}, ..., U_{n}) \; \; \textbf{:} \; \; U_{k} =  \sum_{i,j=1}(t_{k} + p_{
 
 \todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
 
-Final model performance was evaluated on an independent test dataset via both DSC and sDSC metrics. Organ specific tolerance $\tau$ for rectum and bladder contours were taken as the 95th percentile absolute mean surface distance in mm between expert observers from Roach et al. \cite{Roach_2019}. MSD$_{95}$ values calculated from Roach et al. show organ-specific tolerances of 1.46 mm for the bladder, and 6.99 mm
-\todo{Way too many sig figs here, 2 sig figs, no more.}
+Final model performance was evaluated on an independent test dataset via both DSC and sDSC metrics. Organ specific tolerance $\tau$ for rectum and bladder contours were taken as the 95th percentile absolute mean surface distance in mm between expert observers from Roach et al. \cite{Roach_2019}. MSD$_{95}$ values calculated from Roach et al. show organ-specific tolerances of 1.5 mm for the bladder, and 7.0 mm
 for the rectum.
