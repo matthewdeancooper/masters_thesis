@@ -9,11 +9,11 @@ Patient scans were converted from a propriety Monaco format (.WC files) to DICOM
 
 A total of 15 patients were used for pelvic imaging, corresponding to 1991 total input instances. Data was split at the patient level to enforce independence across training, validation and test datasets. 12 patient scans were used for training, while validation and testing used 2 and 1, respectively. The complete data distribution is provided in Table \ref{table:data_prostate}. Patient contours were present in all input data, while the bladder was present in 28\% of slices, and rectum in 37\%. We note the significant pixel-wise class imbalance between structures, as the output space was 512 x 512 x 3 for multi-organ segmentation. Patient pixels corresponded to a total of 5.21\% of all output pixel in the data, with 0.081\% and 0.021\% corresponding to bladder and rectum.
 
-\input{/home/matthew/masters-thesis/tables/data_prostate}
+\input{./tables/data_prostate}
 
 For vacuum bag segmentation, a total of 26 patients were used, with 21, 3, and 2 corresponding to training, validation and testing, respectively. Vacuum bag structures were present in 70\% of total input images, as seen in Table \ref{table:data_vet}.
 
-\input{/home/matthew/masters-thesis/tables/data_vet}
+\input{./tables/data_vet}
 
 
 Significant data augmentation was used to increase the effective size of our dataset and to regularise over-fitting. Augmentation was performed on-demand for each input-output pair in a batch, and sampled from a random uniform distribution with probability listed below for each type. 50\% of total training data was selected for augmentation per epoch. Augmentations included: Left-right image inversion ($P_{val}=0.5$), random image cropping and resizing ($P_{val}=0.33$, minimum crop size 500 x 500), elastic deformations ($P_{val}=0.33$, with ($\alpha$, $\sigma$) pairs selected from (1201, 10), (1501, 12), and (991, 8)), affine transformations ($P_{val}=0.33$, $\alpha_{max}=20$), and Gaussian noise ($P_{val}=0.33$, $\mu=0$, $\sigma_{max}=0.3$). Furthermore, all input data (including test data) was normalised with respect to the training and validation dataset distributions prior to augmentation. Randomly sampled transformations are included in Figure \ref{fig:augment}.

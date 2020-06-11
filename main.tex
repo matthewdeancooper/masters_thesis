@@ -1,6 +1,20 @@
 %\documentclass[a4paper, 12pt, twoside,parskip=half]{scrbook} 
 \documentclass[a4paper,oneside, 12pt,parskip=half]{scrbook} 
-\usepackage[left=2cm, right=2cm, bottom=2cm, top=2cm]{geometry}
+
+% Increase margins to make todo items more readable during review
+% process.
+
+% === OLD VALUE ===
+% \usepackage[left=2cm, right=2cm, bottom=2cm, top=2cm]{geometry}
+
+% === SB Addition for review ===
+\usepackage[left=2cm, right=9.5cm, bottom=2cm, top=2cm, marginparwidth=9cm]{geometry}
+\usepackage{setspace}
+\doublespacing
+% \usepackage{showframe}
+% ==============================
+
+
 \usepackage[pdftex, breaklinks, colorlinks, citecolor=blue, urlcolor=blue]{hyperref}
 \usepackage{graphicx}
 \usepackage{float}
