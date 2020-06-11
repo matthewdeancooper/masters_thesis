@@ -5,7 +5,12 @@
 \section{Model 1: Pelvic imaging}
 A total of 5 loss functions were assessed for ability to train a 2D U-net with a small dataset. As seen in Table \ref{table:loss_prostate}, dice similarity coefficient (DSC), precision and sensitivity metrics were recorded on an independent test dataset to measure model generalisability for each loss. Binary cross entropy (BCE) is a pixel-wise similarity measure \cite{Bertels2019},
 \todo{You shouldn't need to be explaining anything to me about BCE in your results section.}
-and achieved the strongest scores with a DSC of 0.996, precision of 0.999, and sensitivity of 0.991. Patient contouring under BCE was excellent,
+and achieved the strongest scores with a DSC of 0.996, precision of 0.999, and sensitivity of 0.991. 
+
+\todo{Remove this new page I put in here to help the reading of comments :)}
+\newpage
+
+Patient contouring under BCE was excellent,
 \todo{No need to add in subjective language, the numbers speak for themselves. There's no place for subjective language in this kind of report. If you want to make a statement of quality say something like ``Every predicted contour on every slice were within range of IOV found within the literature'' or something to that tune, as long as you have those numbers, and it's true of course. Express quality by stating it is above a well defined threshold, ideally a threshold for quality that you've defined within your theory section.}
 with an average organ specific DSC of 0.996; however, BCE failed to produce any positive predictions for the rectum, and only large bladder examples were identified - likely due to the built-in assumption that classes are balanced \cite{Ronneberger_2015}. Reports have indicated that BCE has sub-optimal performance on class imbalanced data \cite{taghanaki2018}; however, large bladder examples were contoured accurately
 \todo{`accurately' what do you mean? Maybe something like ``bladder examples were contoured within the IOV for that organ''.}
