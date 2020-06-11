@@ -15,7 +15,11 @@ For instance, vacuum bag segmentation was often incomplete in patient scans, as 
 \todo{\ldots consistent labels on the slices used as inputs to the model\ldots}
 are required for machine learning. The final data pipeline was designed to handle filenames (pointing to arrays) as the primary method of matching an input with the ground truth. From here, an array for each filename was read into memory if it belonged to the current batch; this removed memory constraints on dataset size as only a single batch populated the RAM at each training step.
 
-A total of 15 patients were used for pelvic imaging, corresponding to 1991 total input instances. Data was split at the patient level to enforce independence across training, validation and test datasets. 12 patient scans were used for training, while validation and testing used 2 and 1, respectively. The complete data distribution is provided in Table \ref{table:data_prostate}. Patient contours were present in all input data, while the bladder was present in 28\% of slices, and rectum in 37\%. We note the significant pixel-wise class imbalance between structures, as the output space was 512 x 512 x 3 for multi-organ segmentation. Patient pixels corresponded to a total of 5.21\% of all output pixel in the data, with 0.081\% and 0.021\% corresponding to bladder and rectum.
+A total of 15 patients were used for pelvic imaging, corresponding to 1991 total input instances. Data was split at the patient level to enforce independence across training, validation and test datasets. 12 patient scans were used for training, while validation and testing used 2 and 1, respectively. The complete data distribution is provided in Table \ref{table:data_prostate}. Patient contours were present in all input data, while the bladder was present in 28\% of slices, and rectum in 37\%. We note the significant pixel-wise class imbalance between structures, as the output space was 512 x 512 x 3 for multi-organ segmentation. Patient pixels corresponded to a total of 5.21\%
+\todo{Just one decimal point here}
+of all output pixel in the data, with 0.081\% and 0.021\%
+\todo{probably just one sig fig for these within the text, keep the precision in the table though.\ldots}
+corresponding to bladder and rectum.
 
 \input{./tables/data_prostate}
 
@@ -24,7 +28,9 @@ For vacuum bag segmentation, a total of 26 patients were used, with 21, 3, and 2
 \input{./tables/data_vet}
 
 
-Significant data augmentation was used to increase the effective size of our dataset and to regularise over-fitting. Augmentation was performed on-demand for each input-output pair in a batch, and sampled from a random uniform distribution with probability listed below for each type. 50\% of total training data was selected for augmentation per epoch. Augmentations included: Left-right image inversion ($P_{val}=0.5$), random image cropping and resizing ($P_{val}=0.33$, minimum crop size 500 x 500), elastic deformations ($P_{val}=0.33$, with ($\alpha$, $\sigma$) pairs selected from (1201, 10), (1501, 12), and (991, 8)), affine transformations ($P_{val}=0.33$, $\alpha_{max}=20$), and Gaussian noise ($P_{val}=0.33$, $\mu=0$, $\sigma_{max}=0.3$). Furthermore, all input data (including test data) was normalised with respect to the training and validation dataset distributions prior to augmentation. Randomly sampled transformations are included in Figure \ref{fig:augment}.
+Significant data augmentation was used to increase the effective size of our dataset and to regularise over-fitting.
+\todo{\ldots and to combat over-fitting via regularisation.}
+Augmentation was performed on-demand for each input-output pair in a batch, and sampled from a random uniform distribution with probability listed below for each type. 50\%\todo{Out of interest, why was 50\% chosen?} of total training data was selected for augmentation per epoch. Augmentations included: Left-right image inversion ($P_{val}=0.5$), random image cropping and resizing ($P_{val}=0.33$, minimum crop size 500 x 500), elastic deformations ($P_{val}=0.33$, with ($\alpha$, $\sigma$) pairs selected from (1201, 10), (1501, 12), and (991, 8)), affine transformations ($P_{val}=0.33$, $\alpha_{max}=20$), and Gaussian noise ($P_{val}=0.33$, $\mu=0$, $\sigma_{max}=0.3$). Furthermore, all input data (including test data) was normalised with respect to the training and validation dataset distributions prior to augmentation. Randomly sampled transformations are included in Figure \ref{fig:augment}.
 
 \begin{figure}[!htb]
 	\begin{center}
@@ -36,11 +42,19 @@ Significant data augmentation was used to increase the effective size of our dat
 
 \section{Model architecture}
 \label{ch:method-architecture}
-We designed a 2D U-net architecture with 7 levels, consisting of 6 encoding and 6 decoding blocks, outlined in Figure \ref{fig:model}. The model accepts a full resolution (512 x 512) CT image as input, and outputs selected contours in the original resolution by the use of padded convolutions, each of which is followed by batch normalisation and ReLU activation. Each encoding block performs a repeated sequence of 3 x 3 convolution (increasing feature channels). Extracted feature maps are passed via the skip connection in one pathway, while a 3 x 3 convolution with stride size 2 halves the resolution before passing features to the next encoding block.
+We
+\todo{Have you been asked to use personal pronouns? You use them throughout and they seem odd to me in this kind of report\ldots}
+designed a 2D U-net architecture with 7 levels, consisting of 6 encoding and 6 decoding blocks, outlined in Figure \ref{fig:model}. The model accepts a full resolution (512 x 512) CT image as input, and outputs selected contours in the original resolution by the use of padded convolutions, each of which is followed by batch normalisation and ReLU activation. Each encoding block performs a repeated sequence of 3 x 3 convolution (increasing feature channels). Extracted feature maps are passed via the skip connection in one pathway, while a 3 x 3 convolution with stride size 2 halves
+\todo{\ldots with a stride of size 2 results in a halving of the resolution \ldots}
+the resolution before passing features to the next encoding block.
 
 Conversely, each decoding block upsamples input via a 3 x 3 2D transposed convolution with stride size of 2. Upsampled feature maps are then concatenated with skip connections. Dropout is selectively performed with a probability value of 20\%, before additional 3 x 3 convolution sequences reduce the feature channels.
 
-Finally, multi-organ segmentation can be controlled via the C (Channel - corresponding to the number of segmentations) output variable specified in the last 1 x 1 convolutional layer. A sigmoid activation function is used to account for the non-mutually exclusive nature of pixel-wise binary classification on anatomic structures (i.e. a voxel can belong to multiple structures).
+Finally, multi-organ segmentation can be controlled via the C (Channel - corresponding to the number of segmentations) output variable
+\todo{\ldots via the C output variable, the number of output channels, which corresponds to the number of segmentations. This is specified \ldots}
+specified in the last 1 x 1 convolutional layer. A sigmoid activation function is used to account for the non-mutually exclusive nature
+\todo{I don't understand this :/, why does sigmoid, have anything to do with the non-mutual exclusivity?}
+of pixel-wise binary classification on anatomic structures (i.e. a voxel can belong to multiple structures).
 
 \begin{figure}[!htb]
 	\begin{center}
