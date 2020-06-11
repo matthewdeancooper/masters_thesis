@@ -3,7 +3,7 @@
 
 \section{Datasets}
 \label{ch:method-dataset}
-This project focused on building an automated segmentation solution for radiotherapy. Two applications were targeted: A multi-organ segmentation model for pelvic imaging (with patient, bladder and rectum contouring); and a single structure model for vacuum bag contouring in canine imaging.\todo{maybe here add `as described in section blah'} Anonymised pelvic imaging data was provided by Riverina Cancer Care Centre from active prostate cancer RT patients over multiple stages of treatment. Canine imaging data was provided by the Small Animal Specialists Hospital (SASH) and contained variable cancer locations and patient orientations. All input data consisted of raw diagnostic CT images acquired with a 512 x 512 matrix. Pelvic imaging scans were comprised of 1.37 mm x 1.37 mm x 2 mm voxels; while canine imaging scans contained variable spacings across patients, with an average voxel size of 0.85 mm x 0.85 mm x 1.907 mm\todo{probably better to just use one decimal place here}.
+This project focused on building an automated segmentation solution for radiotherapy. Two applications were targeted: A multi-organ segmentation model for pelvic imaging (with patient, bladder and rectum contouring); and a single structure model for vacuum bag contouring in canine imaging. Anonymised pelvic imaging data was provided by Riverina Cancer Care Centre from active prostate cancer RT patients over multiple stages of treatment. Canine imaging data was provided by the Small Animal Specialists Hospital (SASH) and contained variable cancer locations and patient orientations. All input data consisted of raw diagnostic CT images acquired with a 512 x 512 matrix. Pelvic imaging scans were comprised of 1.37 mm x 1.37 mm x 2 mm voxels; while canine imaging scans contained variable spacings across patients, with an average voxel size of 0.85 mm x 0.85 mm x 1.91 mm.
 
 Patient scans were converted from a propriety Monaco format (.WC files)
 \todo{Did you actually do this? Or do you mean instead ``plans were exported from the TPS in DICOM format''?}
@@ -15,11 +15,7 @@ For instance, vacuum bag segmentation was often incomplete in patient scans, as 
 \todo{\ldots consistent labels on the slices used as inputs to the model\ldots}
 are required for machine learning. The final data pipeline was designed to handle filenames (pointing to arrays) as the primary method of matching an input with the ground truth. From here, an array for each filename was read into memory if it belonged to the current batch; this removed memory constraints on dataset size as only a single batch populated the RAM at each training step.
 
-A total of 15 patients were used for pelvic imaging, corresponding to 1991 total input instances. Data was split at the patient level to enforce independence across training, validation and test datasets. 12 patient scans were used for training, while validation and testing used 2 and 1, respectively. The complete data distribution is provided in Table \ref{table:data_prostate}. Patient contours were present in all input data, while the bladder was present in 28\% of slices, and rectum in 37\%. We note the significant pixel-wise class imbalance between structures, as the output space was 512 x 512 x 3 for multi-organ segmentation. Patient pixels corresponded to a total of 5.21\%
-\todo{Just one decimal point here}
-of all output pixel in the data, with 0.081\% and 0.021\%
-\todo{probably just one sig fig for these within the text, keep the precision in the table though.\ldots}
-corresponding to bladder and rectum.
+A total of 15 patients were used for pelvic imaging, corresponding to 1991 total input instances. Data was split at the patient level to enforce independence across training, validation and test datasets. 12 patient scans were used for training, while validation and testing used 2 and 1, respectively. The complete data distribution is provided in Table \ref{table:data_prostate}. Patient contours were present in all input data, while the bladder was present in 28\% of slices, and rectum in 37\%. We note the significant pixel-wise class imbalance between structures, as the output space was 512 x 512 x 3 for multi-organ segmentation. Patient pixels corresponded to a total of 5.2\% of all output pixel in the data, with 0.08\% and 0.02\% corresponding to bladder and rectum.
 
 \input{./tables/data_prostate}
 
@@ -28,8 +24,7 @@ For vacuum bag segmentation, a total of 26 patients were used, with 21, 3, and 2
 \input{./tables/data_vet}
 
 
-Significant data augmentation was used to increase the effective size of our dataset and to regularise over-fitting.
-\todo{\ldots and to combat over-fitting via regularisation.}
+Significant data augmentation was used to increase the effective size of our dataset and to combat over-fitting via regularisation.
 Augmentation was performed on-demand for each input-output pair in a batch, and sampled from a random uniform distribution with probability listed below for each type. 50\%\todo{Out of interest, why was 50\% chosen?} of total training data was selected for augmentation per epoch. Augmentations included: Left-right image inversion ($P_{val}=0.5$), random image cropping and resizing ($P_{val}=0.33$, minimum crop size 500 x 500), elastic deformations ($P_{val}=0.33$, with ($\alpha$, $\sigma$) pairs selected from (1201, 10), (1501, 12), and (991, 8)), affine transformations ($P_{val}=0.33$, $\alpha_{max}=20$), and Gaussian noise ($P_{val}=0.33$, $\mu=0$, $\sigma_{max}=0.3$). Furthermore, all input data (including test data) was normalised with respect to the training and validation dataset distributions prior to augmentation. Randomly sampled transformations are included in Figure \ref{fig:augment}.
 
 \begin{figure}[!htb]
@@ -42,9 +37,7 @@ Augmentation was performed on-demand for each input-output pair in a batch, and 
 
 \section{Model architecture}
 \label{ch:method-architecture}
-We
-\todo{Have you been asked to use personal pronouns? You use them throughout and they seem odd to me in this kind of report\ldots}
-designed a 2D U-net architecture with 7 levels, consisting of 6 encoding and 6 decoding blocks, outlined in Figure \ref{fig:model}. The model accepts a full resolution (512 x 512) CT image as input, and outputs selected contours in the original resolution by the use of padded convolutions, each of which is followed by batch normalisation and ReLU activation. Each encoding block performs a repeated sequence of 3 x 3 convolution (increasing feature channels). Extracted feature maps are passed via the skip connection in one pathway, while a 3 x 3 convolution with stride size 2 halves
+A 2D U-Net architecture was designed  with 7 levels, consisting of 6 encoding and 6 decoding blocks, outlined in Figure \ref{fig:model}. The model accepts a full resolution (512 x 512) CT image as input, and outputs selected contours in the original resolution by the use of padded convolutions, each of which is followed by batch normalisation and ReLU activation. Each encoding block performs a repeated sequence of 3 x 3 convolution (increasing feature channels). Extracted feature maps are passed via the skip connection in one pathway, while a 3 x 3 convolution with stride size 2 halves
 \todo{\ldots with a stride of size 2 results in a halving of the resolution \ldots}
 the resolution before passing features to the next encoding block.
 
@@ -70,15 +63,9 @@ The model was trained using the Adam (Adaptive momentum estimation) optimisation
 
 \section{Loss functions}
 \label{ch:method-loss}
-A total of 5 loss functions were assessed for pelvic imaging: Binary Cross entropy (BCE), soft dice similarity coefficient (soft DSC) \cite{Bertels2019},
-\todo{In the section above you shortened this to sDSC, I don't mind which one you chose, just be consistent.}
-weighted soft dice similarity coefficient (w. soft DSC or modified generalised dice loss \cite{Sudre_2017}), a modified combination loss BCE + 2 (w. soft DSC) \cite{taghanaki2018}, and focal Tversky loss \cite{Zhu_2018, Khan2019, abraham2018}. In contrast, weighted soft DSC was not attempted for canine imaging due to the single segmentation output.
+A total of 5 loss functions were assessed for pelvic imaging: Binary Cross entropy (BCE), soft dice similarity coefficient (soft DSC) \cite{Bertels2019}, weighted soft dice similarity coefficient (w. soft DSC or modified generalised dice loss \cite{Sudre_2017}), a modified combination loss BCE + 2 (w. soft DSC) \cite{taghanaki2018}, and focal Tversky loss \cite{Zhu_2018, Khan2019, abraham2018}. In contrast, weighted soft DSC was not attempted for canine imaging due to the single segmentation output.
 
-Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a tensorflow
-\todo{TensorFlow}
-implementation is included in the pymedphys
-\todo{PyMedPhys}
-library.
+Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
 \todo{Is it appropriate to include a footnote with link to a specific commit hash (so future moving of stuff doesn't break the link), for example https://github.com/pymedphys/pymedphys/tree/9ef43ae/examples/protyping/pymedphys-segmentation}
 
 \begin{equation}
