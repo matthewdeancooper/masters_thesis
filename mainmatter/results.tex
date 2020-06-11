@@ -130,12 +130,14 @@ State-of-the-art U-net implementations have recently been able to achieve DSC va
 Model 2 produced vacuum bag contours with an average DSC of 0.952 and MSD of 0.175 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}\todo[color=red!40]{Cite}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is
 \todo{wording}
 dose distribution under contours produced by this model - and a potential time saving of 30 minutes per patient. Dose shift has yet to be assessed  in clinic - however, we suggest that comparing dose volume histograms between model and expert contours under an identical treatment plan could provide a quantitative measure of clinical acceptability.
-\todo{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volumen occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
+\todo{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
 If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients \cite{CITATION}\todo[color=red!40]{Cite}.
 
 \input{tables/metrics}
 
 \todo[inline, color=blue!40]{Addition? Further discuss dose implications. Yaser wanted to see this but i feel like this is tangential to the main points of this report. To assess properly would be a project in itself - its also not discussed in ML lit.}
+
+\todo{To assess properly doesn't need to be a project unto itself, just a figure with a PDD, and a note regarding what a change in patient surface by the largest amount you found in your model corresponds to as a change in dose at 10 cm depth in the patient.}
 
 
 \section{Limitations and future work}
