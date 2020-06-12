@@ -112,7 +112,8 @@ ReLU(x) = max(0,x)
 %
 %\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
 
-The binary cross entropy (BCE) is presented in \ref{eq:method_bce}, where $r_{n}$ are reference (ground truth) foreground pixel values, $p_{n}$ the prediction foreground pixel values, and N the total number of image elements (pixels) \cite{Sudre_2017}. BCE as presented assumes equal pixel weightings between classes \cite{Sudre_2017} - weighted versions do exist; however, performance tends to be poor compared to DSC \cite{Bertels2019}.
+
+Binary crossentropy (BCE) is a measure of the average difference between the ground truth value and the prediction over all classes considered \cite{taghanaki2018} - presented in equation \ref{eq:method_bce}. Where $r_{n}$ are reference (ground truth) foreground pixel values, $p_{n}$ the prediction foreground pixel values, and N the total number of image elements (pixels) \cite{Sudre_2017}. BCE as presented assumes equal pixel weightings between classes \cite{Sudre_2017} - weighted versions do exist; however, performance tends to be poor compared to DSC \cite{Bertels2019}.
 
 \begin{equation}
 \textrm{BCE} = -\frac{1}{N}\sum_{n=1}^{N}r_{n} \; log(p_{n}) \; + \; (1-r_{n}) \; log(1-p_{n})
