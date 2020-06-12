@@ -54,36 +54,9 @@ of pixel-wise binary classification on anatomic structures (i.e. a voxel can bel
 The model was trained using the Adam (Adaptive momentum estimation) optimisation algorithm \cite{kingma2014} with an initial learning rate of $10^{-5}$, a batch size of 1 for pelvic imaging, and 3 for canine imaging. Model training was scheduled to conclude when validation loss had not improved for a period of 20 epochs. In addition, learning rate decay was triggered by a validation loss plateau period of 3 epochs. Initial model weights were determined via `He' kernel initialisation), which samples from a zero mean Gaussian distribution with variance $\sigma=\sqrt{2/N}$ (as in Ronneberger et al \cite{Ronneberger_2015}), where N is the incoming nodes for a single activation (i.e. for n x n convolution over M feature maps, N = n x n x M). In addition, we accelerate training for pelvic imaging by adopting the strategy of Bertels et al. to further initialising model parameters via 3 epochs of training with binary cross entropy.
 
 
-
-\section{Loss functions}
 \label{ch:method-loss}
 A total of 5 loss functions were assessed for pelvic imaging: Binary Cross entropy (BCE), soft dice similarity coefficient (soft DSC) \cite{Bertels2019}, weighted soft dice similarity coefficient (w. soft DSC or modified generalised dice loss \cite{Sudre_2017}), a modified combination loss BCE + 2 (w. soft DSC) \cite{taghanaki2018}, and focal Tversky loss \cite{Zhu_2018, Khan2019, abraham2018}. In contrast, weighted soft DSC was not attempted for canine imaging due to the single segmentation output.
 
-Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
-%\todo{Is it appropriate to include a footnote with link to a specific commit hash (so future moving of stuff doesn't break the link), for example https://github.com/pymedphys/pymedphys/tree/9ef43ae/examples/protyping/pymedphys-segmentation}
-
-\begin{equation}
-\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
-\label{eq:method_wsdsc}
-\end{equation}
-
-\begin{equation}
-W = (W_{1}, ..., W_{n}) \; \; \textbf{:} \; \; W_{k} = \frac{\sum_{k=1}^{n} |t_{k} |}{t_{k} + \epsilon}
-\label{eq:w}
-\end{equation}
-
-\begin{equation}
-%I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{i} = \langle\,t_{i} \,,\,  p_{i}\,\rangle
-I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{k} = \sum_{i,j=1}(t_{k} \, \odot \,  p_{k})_{ij}
-\label{eq:i}
-\end{equation}
-
-\begin{equation}
-U = (U_{1}, ..., U_{n}) \; \; \textbf{:} \; \; U_{k} =  \sum_{i,j=1}(t_{k} + p_{k})_{ij}
-\label{eq:u}
-\end{equation}
-
-\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
 
 Final model performance was evaluated on an independent test dataset via both DSC and sDSC metrics. Organ specific tolerance $\tau$ for rectum and bladder contours were taken as the 95th percentile absolute mean surface distance in mm between expert observers from Roach et al. \cite{Roach_2019}. MSD$_{95}$ values calculated from Roach et al. show organ-specific tolerances of 1.5 mm for the bladder, and 7.0 mm
 for the rectum.

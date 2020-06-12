@@ -114,3 +114,31 @@ ReLU(x) = max(0,x)
 %		\label{fig:downsampling}
 %	\end{center}
 %\end{figure}
+\section{Loss functions}
+
+Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
+%\todo{Is it appropriate to include a footnote with link to a specific commit hash (so future moving of stuff doesn't break the link), for example https://github.com/pymedphys/pymedphys/tree/9ef43ae/examples/protyping/pymedphys-segmentation}
+
+\begin{equation}
+\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
+\label{eq:method_wsdsc}
+\end{equation}
+
+\begin{equation}
+W = (W_{1}, ..., W_{n}) \; \; \textbf{:} \; \; W_{k} = \frac{\sum_{k=1}^{n} |t_{k} |}{t_{k} + \epsilon}
+\label{eq:w}
+\end{equation}
+
+\begin{equation}
+%I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{i} = \langle\,t_{i} \,,\,  p_{i}\,\rangle
+I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{k} = \sum_{i,j=1}(t_{k} \, \odot \,  p_{k})_{ij}
+\label{eq:i}
+\end{equation}
+
+\begin{equation}
+U = (U_{1}, ..., U_{n}) \; \; \textbf{:} \; \; U_{k} =  \sum_{i,j=1}(t_{k} + p_{k})_{ij}
+\label{eq:u}
+\end{equation}
+
+\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
+
