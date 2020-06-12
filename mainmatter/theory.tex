@@ -116,29 +116,66 @@ ReLU(x) = max(0,x)
 %\end{figure}
 \section{Loss functions}
 
-Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
+%Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
+
+%\begin{equation}
+%\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
+%\label{eq:method_wsdsc}
+%\end{equation}
+
 %\todo{Is it appropriate to include a footnote with link to a specific commit hash (so future moving of stuff doesn't break the link), for example https://github.com/pymedphys/pymedphys/tree/9ef43ae/examples/protyping/pymedphys-segmentation}
 
+%\begin{equation}
+%\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
+%\label{eq:method_wsdsc}
+%\end{equation}
+%
+%\begin{equation}
+%W = (W_{1}, ..., W_{n}) \; \; \textbf{:} \; \; W_{k} = \frac{\sum_{k=1}^{n} |t_{k} |}{t_{k} + \epsilon}
+%\label{eq:w}
+%\end{equation}
+%
+%\begin{equation}
+%%I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{i} = \langle\,t_{i} \,,\,  p_{i}\,\rangle
+%I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{k} = \sum_{i,j=1}(t_{k} \, \odot \,  p_{k})_{ij}
+%\label{eq:i}
+%\end{equation}
+%
+%\begin{equation}
+%U = (U_{1}, ..., U_{n}) \; \; \textbf{:} \; \; U_{k} =  \sum_{i,j=1}(t_{k} + p_{k})_{ij}
+%\label{eq:u}
+%\end{equation}
+%
+%\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
+R
+
+soft DSC loss can be recovered by setting $w_{l}$ = $\vec{1}$
+
+
 \begin{equation}
-\textrm{w. soft DSC} = \frac{2 \, (W \cdot I + \epsilon)}{W \cdot U + \epsilon}
+\textrm{w. soft DSC$_{loss}$} = 1-2\frac{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln}p_{ln} + \epsilon}{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln} + p_{ln} + \epsilon} \; \;  \; \; \textbf{:} \; \; \; \; w_{l} = \frac{1}{\sum_{n=1}^{N}(r_{ln} + \epsilon)^2}
 \label{eq:method_wsdsc}
 \end{equation}
-
+%
 \begin{equation}
-W = (W_{1}, ..., W_{n}) \; \; \textbf{:} \; \; W_{k} = \frac{\sum_{k=1}^{n} |t_{k} |}{t_{k} + \epsilon}
-\label{eq:w}
+\textrm{BCE} = -\frac{1}{N}\sum_{n=1}^{N}r_{n} \; log(p_{n}) \; + \; (1-r_{n}) \; log(1-p_{n})
+\label{eq:method_bce}
 \end{equation}
 
-\begin{equation}
-%I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{i} = \langle\,t_{i} \,,\,  p_{i}\,\rangle
-I = (I_{1}, ..., I_{n}) \; \; \textbf{:} \; \; I_{k} = \sum_{i,j=1}(t_{k} \, \odot \,  p_{k})_{ij}
-\label{eq:i}
-\end{equation}
+The Tversky index (seen in \ref{eq:method_TI}) is an extension of the dice loss designed to enforce a trade-off between false-positives and false-negatives via the tuning of the $alpha$ and $beta$ parameters \cite{Khan2019}. 
 
 \begin{equation}
-U = (U_{1}, ..., U_{n}) \; \; \textbf{:} \; \; U_{k} =  \sum_{i,j=1}(t_{k} + p_{k})_{ij}
-\label{eq:u}
+\textrm{T}(\alpha, \beta) = \frac{\sum_{l=1}^{2}r_{ln}p_{ln} + \epsilon}{
+\sum_{l=1}^{2}r_{ln}p_{ln} +
+\alpha\sum_{l=1}^{2}r_{l\bar{n}}p_{ln} +
+\beta\sum_{l=1}^{2}r_{ln}p_{l\bar{n}} + \epsilon	
+}
+\label{eq:method_TI}
 \end{equation}
 
-\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
+The focal Tversly loss is an extension of the focal cross entropy loss presented by Lin to 
 
+\begin{equation}
+\textrm{FTL}(\alpha, \beta) = \sum(1-\textrm{TL}(\alpha, \beta))^{1 / \gamma}
+\label{eq:method_TL}
+\end{equation}
