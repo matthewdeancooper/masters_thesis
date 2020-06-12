@@ -58,7 +58,7 @@ In Figure \ref{fig:prostate_bladder}, weighted soft DSC underestimated the poste
 	\end{center}
 \end{figure}
 
-Model 1 under weighted soft DSC was unable to identify rectum contours containing hollow regions (18\% of rectum contours) as seen in Figure \ref{fig:prostate_rectum} D. It is suspected that further training on a distribution of similar cases may improve performance. All other OAR examples in the test dataset were correctly identified. As seen in Figure \ref{fig:prostate_rectum} and Table \ref{table:organ}, DSC values for rectum contours were lower on average when compared to the bladder - consistent with expert IOV \cite{Roach_2019} and other models in the literature \cite{Liu_2020, Kazemifar_2018, Wong2020}. However, a higher sDSC indicated that the degree of correction required for the identified rectum contours was lower than the corrections required for bladder contours.
+Model 1 under weighted soft DSC was unable to identify rectum contours containing hollow regions (18\% of rectum contours) as seen in Figure \ref{fig:prostate_rectum} D. It is suspected that further training on a distribution of similar cases may improve performance. All other OAR examples in the test dataset were correctly identified. As seen in Figure \ref{fig:prostate_rectum} and Table \ref{table:organ}, DSC values for rectum contours were lower on average when compared to the bladder - consistent with expert IOV \cite{Roach_2019} and other models in the literature \cite{Liu_2020, Kazemifar_2018, Wong2020}. However, a higher sDSC indicated that the degree of correction required for the identified rectum contours was lower than the correction required for bladder contours.
 
 
 
@@ -72,7 +72,7 @@ Model 1 under weighted soft DSC was unable to identify rectum contours containin
 
 \section{Model 2: Canine imaging}
 
-Three loss functions were attempted for vacuum bag segmentation in canine imaging, as seen in Table \ref{table:loss_vet}. Soft DSC outperformed both BCE and focal Tversky on DSC and precision values. Focal Tversky had the highest sensitivity (0.969) as expected \cite{Khan2019}, with BCE second (0.954). The final model was selected at 100 epochs under soft DSC loss. Representative model output is presented in Figure \ref{fig:vet_vacbag}. Soft DSC loss showed excellent agreement with ground truth vacuum bag contours - and was able to handle both negative (E) and small contour (B) examples in the test dataset (see Figure \ref{fig:vet_vacbag}).
+Three loss functions were attempted for vacuum bag segmentation in canine imaging, as seen in Table \ref{table:loss_vet}. Soft DSC outperformed both BCE and focal Tversky on DSC and precision values. Focal Tversky had the highest sensitivity (0.97) as expected \cite{Khan2019}, with BCE second (0.95). The final model was selected at 100 epochs under soft DSC loss. Representative model output is presented in Figure \ref{fig:vet_vacbag}. Soft DSC loss showed excellent agreement with ground truth vacuum bag contours - and was able to handle both negative (E) and small contour (B) examples in the test dataset (see Figure \ref{fig:vet_vacbag}).
 
 \input{tables/loss_vet}
 
@@ -91,34 +91,36 @@ Typically, we expect training metric values to overstate a model's predictive ca
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=1.0\textwidth]{figures/vet_vacbag}
-		\caption{Representative output for vacuum bag: Model 2 - trained soft DSC loss. Truth contour (yellow), prediction contour (red). Mean surface distance (MSD) mm.}
+		\caption{Representative output for vacuum bag: Model 2 - trained via soft DSC loss. Truth contour (yellow), prediction contour (red). Mean surface distance (MSD) mm.}
 		\label{fig:vet_vacbag}
 	\end{center}
 \end{figure}
 
 \section{Clinical relevance}
-The pelvic imaging model showed excellent
-\todo{I'm looking for magical words like here are the numbers, and these parameters are always equal to or better contours than the parameters of contours produced by experts. Or something to that extent. The word ``excellent'' doesn't belong here.}
-agreement with observers for patient contours, with an average DSC value of 0.998, and a mean surface distance (MSD) of $<0.1$ mm, as seen in Table \ref{table:organ}. Bladder contours had an average DSC score of 0.864 with a standard deviation (STD) of 0.221. Additionally, average bladder MSD was measured to be 1.075 mm with an STD of 2.986 mm.
-\todo{Nope. Don't use more than one sig fig for standard deviation\ldots and on that point, I don't think quoting a standard deviation for what looks something like a poisson distribution is relevant. It clearly isn't normally distributed when 1 mm - 3 * 2 mm (mean - 2 standard deviations, which should give the lower 2.5\% percentile) is a distance of -5 mm \ldots Instead, it would be much more helpful to give mean and maxes.}
-Average volumetric rectum agreement was considerably lower, with an average DSC of 0.670 and STD 0.121, and a MSD of 1.120 mm with STD 2.143 mm.
-\todo{See above comment}
+\todo[inline]{I'm looking for magical words like here are the numbers, and these parameters are always equal to or better contours than the parameters of contours produced by experts. Or something to that extent. The word ``excellent'' doesn't belong here.}
+
+The pelvic imaging model showed excellent agreement with observers for patient contours, with an average DSC value of 0.998, and a mean surface distance (MSD) of $<0.1$ mm, as seen in Table \ref{table:organ}. Bladder contours had an average DSC score of 0.86 with a standard deviation (STD) of 0.221. Additionally, average bladder MSD was measured to be 1.075 mm with an STD of 2.986 mm. Average volumetric rectum agreement was considerably lower, with an average DSC of 0.67 and STD 0.1, and a MSD of 1.1 mm with STD 2 mm.
+
+\todo[inline]{Nope. Don't use more than one sig fig for standard deviation\ldots and on that point, I don't think quoting a standard deviation for what looks something like a poisson distribution is relevant. It clearly isn't normally distributed when 1 mm - 3 * 2 mm (mean - 2 standard deviations, which should give the lower 2.5\% percentile) is a distance of -5 mm \ldots Instead, it would be much more helpful to give mean and maxes.}
+
 In comparison, organ specific tolerances used for these OARs (95th percentile MSD between experts - i.e. top 95\% expert variance) were determined to be 1.5 mm and 7.0 mm
 for the bladder and rectum, respectively \cite{Roach_2019, Nikolov_2018}. Large variances in bladder MSD corresponded to predictions that under-segmented the posterior aspect of the bladder (as seen in Figure \ref{fig:prostate_bladder} A-B) However, the vast majority of bladder surfaces were contoured correctly within expert IOV - with a mean sDSC 0.876(0.117). In comparison, an even larger proportion of rectum surface points did not need correction to be within expert IOV, with a mean sDSC of 0.922(0.138) recorded. More work is required to correlate sDSC values with time required for contour correction \cite{Nikolov_2018, Vaassen_2020}.
 
 Literature reports that clinically acceptable agreement between expert observers is DSC $\geq$ 0.7 for the bladder and rectum \cite{Roach_2019}.
 \todo{This belongs in a prominant place within your theory section, and it needs to be flagged in your method section that this is your measuring stick you use to judge all results as you present them. And then, instead of mentioning it here, use this yard stick throughout instead of using subjective language above.}
-However, experts have been reported to acheive similarities much higher than this,  DSC 0.93 $\pm$ 0.03, MSD 0.99(0.30) mm for the bladder and DSC 0.81 $\pm$ 0.07, MSD 2.862(2.066) mm for the rectum \cite{Roach_2019}. These finding indicate that although rectum contours produced by model 1 may be clinically acceptable, model performance falls short of expert IOV without contour correction.
+However, experts have been reported to acheive similarities much higher than this,  DSC 0.93 $\pm$ 0.03, MSD 0.99(0.30) mm for the bladder and DSC 0.81 $\pm$ 0.07, MSD 2.862(2.066) mm for the rectum \cite{Roach_2019}. These finding indicate that although bladder and rectum contours produced by the  may be clinically acceptable, performance falls short of expert IOV.
 
 State-of-the-art U-Net implementations have recently been able to achieve DSC values of 0.95 and 0.92 for the bladder and rectum, respectively \cite{Kazemifar_2018}. However, 85 CT patient scans were included in this dataset, compared to the 16 included in our study. We suspect that increasing the number of patients in our study would lead to higher generalisability in model performance (reported to scale logarithmically with dataset size \cite{Nemoto_2020}) as well as provide a broader validation and test distribution - improving the reliability and robustness of performance metrics \cite{Ronneberger_2015}. 
 
-Model 2 produced vacuum bag contours with an average DSC of 0.952 and MSD of 0.175 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is
+Model 2 produced vacuum bag contours with an average DSC of 0.95 and MSD of 0.18 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is
 \todo{wording}
 dose distribution under contours produced by this model - and a potential time saving of 30 minutes per patient. Dose shift has yet to be assessed  in clinic - however, we suggest that comparing dose volume histograms between model and expert contours under an identical treatment plan could provide a quantitative measure of clinical acceptability.
-\todo{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
-If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients \cite{CITATION}.
 
-\todo{Remove this new page I put in here to help the reading of comments :)}
+\todo{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
+
+If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients.
+
+
 \newpage
 
 \input{tables/metrics}
@@ -130,14 +132,15 @@ If acceptance testing validates vacuum bag segmentation, model 2 has the potenti
 
 \section{Limitations and future work}
 
-A common challenge in deep-learning applications to medical imaging is small data set sizes \cite{Ronneberger_2015}. Limited data reduces model generalisability \cite{Shen2017}. With state-of-the-art implementations using up to 1000 patients per study \cite{Nikolov_2018}, we expect our results for bladder and rectum segmentation could improve significantly with the broader distribution provided by a larger dataset.
+A common challenge in deep-learning applications to medical imaging is small data set sizes \cite{Ronneberger_2015}. Limited data reduces model generalisability \cite{Shen2017}. With state-of-the-art implementations using up to 1000 patients per study \cite{Nikolov_2018}, it is expected that bladder and rectum segmentation could improve significantly with the broader distribution provided by a larger dataset.
 
 Additionally, organ-specific tolerances used in this study were acquired by Roach et al. from 15 expert observers (9 of which were radiation oncologists) averaged over a cohort of 5 patients \cite{Roach_2019}. Reliability in these values could be improved by surveying a broader range of experts and patients.
 
-To best of our knowledge, only 1 attempt to correlate sDSC with the time required for contour correction currently exists in the literature. Therefore, more work is required to assess the utility of sDSC in a clinical workflow. Alternative surface-based metrics have also been presented; for example, the estimated added path length in Vaassen et al. (seen in Figure \ref{fig:vaassen}). However, no study currently exists comparing sDSC and estimated added path length under IOV tolerances. Additionally, there is an opportunity to investigate the barriers and limitations in designing a soft surrogate sDSC metric that can be optimised directly during training.
+Only 1 attempt to correlate sDSC with the time required for contour correction was found in a search of all papers including the term `surface dice similarity coefficient' on PubMed. Therefore, more work is required to assess the utility of sDSC in a clinical workflow. Alternative surface-based metrics have also been presented; for example, the estimated added path length in Vaassen et al. (seen in Figure \ref{fig:vaassen}). However, no study currently exists comparing sDSC and estimated added path length under IOV tolerances. 
+
+Additionally, there is an opportunity to investigate the barriers and limitations in designing a soft surrogate sDSC metric that can be optimised directly during training.
 
 Furthermore, our ultimate responsibility lies in improving patient outcomes. Hence, there is an opportunity to correlate DSC and sDSC performance with changes to dose distribution when compared with plans developed under expert contouring. A potential advantage of sDSC compared to DSC is the stronger correlation with the time required for contour correction - however, correlation with dose shift may also be an important clinical indicator.
 
 Current studies are researching potential improvements in medical imaging segmentation under 3D U-Net models. Although this study focused on a 2D implementation due to the clinical barriers inherent in 3D models, more work is still required to quantify the potential for performance improvement. 
 
-\todo{Is it worth mentioning the potential to develop a continuous loss function that is similar in effect to the sDSC?}
