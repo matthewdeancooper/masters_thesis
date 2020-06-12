@@ -97,11 +97,8 @@ Typically, it is expected that training metrics will overstate a model's predict
 \end{figure}
 
 \section{Clinical relevance}
-\todo[inline]{I'm looking for magical words like here are the numbers, and these parameters are always equal to or better contours than the parameters of contours produced by experts. Or something to that extent. The word ``excellent'' doesn't belong here.}
-
 The pelvic imaging model showed a strong agreement with observers for patient contours, with an average DSC value of $>0.99$, and a mean surface distance (MSD) of $<0.1$ mm, as seen in Table \ref{table:organ}. Bladder contours had a DSC score of 0.86 with a STD of 0.2. Additionally, bladder MSD was measured to be 1.1 mm with an STD of 3 mm. Volumetric rectum agreement was considerably lower, with a DSC of 0.67 and STD 0.1, and a MSD of 1.1 mm with STD 2 mm.
 
-\todo[inline]{ Report maximum too}
 
 In comparison, organ specific tolerances used for these OARs (95th percentile MSD between experts - i.e. top 95\% expert variance) were determined to be 1.5 mm and 7.0 mm
 for the bladder and rectum, respectively \cite{Roach_2019, Nikolov_2018}. Large variances in bladder MSD corresponded to predictions that under-segmented the posterior aspect of the bladder (as seen in Figure \ref{fig:prostate_bladder} A-B) However, the vast majority of bladder surfaces were contoured correctly within expert IOV - with a mean sDSC 0.87(0.1). In comparison, rectum contours that were correctly identified had a considerable higher number of surface points that did not need correction to be within expert IOV, with a sDSC of 0.92(0.1) recorded. Although, 18\% of rectum contours required full-manual segmentation - reducing the models utility as QA tool.
@@ -110,9 +107,9 @@ Patient and rectum contours are clinically acceptable with DSC $>0.70$. However,
 
 State-of-the-art U-Net implementations have recently been able to achieve DSC values of 0.95 and 0.92 for the bladder and rectum, respectively \cite{Kazemifar_2018}. However, 85 CT patient scans were included in this dataset, compared to the 16 included in our study. We suspect that increasing the number of patients in our study would lead to higher generalisability in model performance (reported to scale logarithmically with dataset size \cite{Nemoto_2020}) as well as provide a broader validation and test distribution - improving the reliability and robustness of performance metrics \cite{Ronneberger_2015}. 
 
-Model 2 produced vacuum bag contours with an average DSC of 0.95 and MSD of 0.18 mm with STD of 0.275 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{CITATION}; hence, the 95th percentile vacuum bag MSD (0.726 mm) corresponds to a negligible shift is dose distribution under contours produced by this model - and a potential time saving of 30 minutes per patient. Dose shift has yet to be assessed  in clinic - however, we suggest that comparing dose volume histograms between model and expert contours under an identical treatment plan could provide a quantitative measure of clinical acceptability.
+Model 2 produced vacuum bag contours with an average DSC of 0.95 and MSD of 0.18 mm with STD of 0.3 mm. The vacuum bag material has an electron density of approximately 0.1\% of water \cite{Park}. The maximum MSD in the test dataset was measured to be 0.82 mm, corresponding to an equivlent depth in water of 0.08 mm; and hence a negligible maximum shift is dose distribution ($<0.4\%$) is expected at 10cm depth under contours produced by this model - and a potential time saving of 30 minutes per patient.
 
-\todo[inline]{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
+%\todo[inline]{This isn't true for vacbag or patient contours. Instead its effect on PDD on the other contoured organs is actually the issue. We don't care about the DVH to the vac bag, and although we do care about the DVH of a patient contour it would be negligably impacted by surface deviations of even 1 - 2 cm due to the shear volume occupied by the patient. However, a 2 cm shift in surface of the patient corresponds to a 10\% dose difference on the following PDD http://ozradonc.wikidot.com/descriptors-of-dose-distribution-photons (60 / 67)}
 
 If acceptance testing validates vacuum bag segmentation, model 2 has the potential to save approximately 30 minutes in treatment planning time per patients.
 
@@ -141,5 +138,5 @@ Additionally, there is an opportunity to investigate the barriers and limitation
 
 Furthermore, our ultimate responsibility lies in improving patient outcomes. Hence, there is an opportunity to correlate DSC and sDSC performance with changes to dose distribution when compared with plans developed under expert contouring. A potential advantage of sDSC compared to DSC is the stronger correlation with the time required for contour correction - however, correlation with dose shift may also be an important clinical indicator.
 
-Current studies are researching potential improvements in medical imaging segmentation under 3D U-Net models. Although this study focused on a 2D implementation due to the clinical barriers inherent in 3D models, more work is still required to quantify the potential for performance improvement. 
+Current studies are researching potential improvements in medical image segmentation under 3D U-Net models. Although this study focused on a 2D implementation due to the clinical barriers inherent in 3D models, more work is still required to quantify the potential for performance improvement. 
 
