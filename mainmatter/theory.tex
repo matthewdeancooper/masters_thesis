@@ -111,20 +111,24 @@ ReLU(x) = max(0,x)
 %\end{equation}
 %
 %\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
+
+The binary cross entropy (BCE) is presented in \ref{eq:method_bce}, where $r_{n}$ are reference (ground truth) foreground pixel values, $p_{n}$ the prediction foreground pixel values, and N the total number of image elements (pixels) \cite{Sudre_2017}. BCE as presented assumes equal pixel weightings between classes \cite{Sudre_2017} - weighted versions do exist; however, performance tends to be poor compared to DSC \cite{Bertels2019}.
+
 \begin{equation}
 \textrm{BCE} = -\frac{1}{N}\sum_{n=1}^{N}r_{n} \; log(p_{n}) \; + \; (1-r_{n}) \; log(1-p_{n})
 \label{eq:method_bce}
 \end{equation}
 
+The w. soft DSC loss (presented in equation \ref{eq:method_wsdsc}) is an extension of the soft DSC loss (see Milletari et al. \cite{milletari2016}) designed to reduce the correlation between volume size and DSC score \cite{Sudre_2017}. This is achieved by a weighting factor $w_{l}$ that scales contributions to the total loss inversely proportional to the number of pixels in the ground truth segmentation - effectively balancing volume differences across classes (or OARs) \cite{Sudre_2017}. The soft DSC loss can be recovered from equation \ref{eq:method_wsdsc} by setting $w_{l}$ = $\vec{1}$
 
 \begin{equation}
 \textrm{w. soft DSC$_{loss}$} = 1-2\frac{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln}p_{ln} + \epsilon}{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln} + p_{ln} + \epsilon} \; \;  \; \; \textbf{:} \; \; \; \; w_{l} = \frac{1}{\sum_{n=1}^{N}(r_{ln} + \epsilon)^2}
 \label{eq:method_wsdsc}
 \end{equation}
 %
-soft DSC loss can be recovered by setting $w_{l}$ = $\vec{1}$
 
-The Tversky index (seen in \ref{eq:method_TI}) is an extension of the soft DSC loss designed to enforce a trade-off between false-positives and false-negatives via the tuning of the $\alpha$ and $\beta$ parameters \cite{Khan2019}. For example, DSC is the harmonic mean of recall (sensitivity) and precision, and places equal eighting on false positives and false negatives. This can be recovred in the Tversky index by setting $\alpha = \beta = 0.5$
+
+The Tversky index (seen in \ref{eq:method_TI}) is an alternative extension of the soft DSC loss, designed to enforce a trade-off between false-positives and false-negatives via the tuning of $\alpha$ and $\beta$ penalty parameters \cite{Khan2019}. For example, DSC is the harmonic mean of recall (sensitivity) and precision, and places equal weighting on false-positives and false-negatives. This can be recovered in the Twersky index by setting $\alpha = \beta = 0.5$. Conversely, choosing $\alpha > \beta$ such that $\alpha + \beta = 1$ will place higher emphasise on lowering false-negative values - potentially improving smaller ROI segmentation \cite{Khan2019}. There are inconsistencies between $\alpha$ and $\beta$ labelling in the literature, we adopt the formulation of Khan et al. \cite{Khan2019} (i.e., see \cite{Khan2019} equation 2. compared to \cite{salehi2017tversky} equation 3.). Note, $p_{ln}$ is the probability pixel $l$ in the prediction mask belongs to the class $n$.
 
 \begin{equation}
 \textrm{T}(\alpha, \beta) = \frac{\sum_{l=1}^{2}r_{ln}p_{ln} + \epsilon}{
@@ -135,7 +139,7 @@ The Tversky index (seen in \ref{eq:method_TI}) is an extension of the soft DSC l
 \label{eq:method_TI}
 \end{equation}
 
-The focal Tversly loss is an extension of the focal cross entropy loss presented by Lin to 
+The focal Tversly loss (equation \ref{eq:method_TL}) is an adaption of the focal cross entropy loss, presented by Lin et al. \cite{lin2017focal}. A focusing parameter $\gamma$ reshapes the loss topology by decreasing contribution of relatively easy (i.e. pixels with high classification probabilities \cite{Khan2019}) example to focus train on difficult segmentation examples \cite{lin2017focal}.
 
 \begin{equation}
 \textrm{FTL}(\alpha, \beta) = \sum(1-\textrm{TL}(\alpha, \beta))^{1 / \gamma}
