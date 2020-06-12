@@ -78,43 +78,7 @@ ReLU(x) = max(0,x)
 \end{equation}
 
 
-
-%\todo[inline]{Addition?  Adam optimisation \cite{kingma2014} Probably not needed as not included in similar lit.}
-%\section{Adam optimisation (Adaptive momentum)}
-%Useful when rescaling learning rate 
-%\begin{figure}[!htb]
-%	\begin{center}
-%		\includegraphics[width=0.45\textwidth]{adam}
-%		\caption{Multi-layer perceptron with 2 hidden layers. (a) Standard network without dropout applied. (b) Standard network after applying dropout. The dropout technique randomly samples neurons in the network for deactivation, allowing parameter tuning to occur as averages over an ensemble of networks \cite{srivastava2014}.}
-%		\label{fig:adam}
-%	\end{center}
-%\end{figure}
-
-%
-%\begin{equation}
-%\theta^{i+1} = \theta^{i} + \alpha \partial_{\theta} L 
-%\label{eq:BCE}
-%\end{equation}
-%
-%\begin{equation}
-%\theta^{i+1} = \theta^{i} + \alpha \partial_{\theta} L 
-%\label{eq:softDSC}
-%\end{equation}
-%
-%\begin{equation}
-%\theta^{i+1} = \theta^{i} + \alpha \partial_{\theta} L 
-%\label{eq:weightedsoftDSC}
-%\end{equation}
-
-%\subsection{Downsampling in U-net}
-%\begin{figure}[!htb]
-%	\begin{center}
-%		\includegraphics[width=1\textwidth]{figures/downsampling}
-%		\caption{Edge detection shown over encoder-decoder pathway for multi-resolution analysis: Downsampling resolution increased the relative kernel size (grey - 3 x 3) to extract coarser (high level) image features for general localisation. Concatenate with high resolution features for local border segmentation}
-%		\label{fig:downsampling}
-%	\end{center}
-%\end{figure}
-\section{Loss functions}
+%\section{Loss functions}
 
 %Calculations for weighted soft DSC were performed via equation \ref{eq:method_wsdsc}, with component equations presented in \ref{eq:w}, \ref{eq:i}, and \ref{eq:u}. $W$, $I$, and $U$ correspond to the weight, intersection and union vectors, indexed with respect to each contour structure by $k\in\{1,...,n\}$; while $\epsilon$ represents a small value $>0$ to ensure division is defined. In addition, $|\cdot|$ notation refers to the cardinality of a set (i.e. the total number of pixels in a contour mask - including zeros), while $t_{k}$ refers to a ground truth array, $p_{k}$ to the predicted array, and $\odot$ to the Hadamard product. The standard soft DSC can be implemented by setting weights $W=\vec{1}$.  Code required for a TensorFlow implementation is included in the PyMedPhys library.
 
@@ -147,35 +111,35 @@ ReLU(x) = max(0,x)
 %\end{equation}
 %
 %\todo[inline, color=blue!40]{Addition? - Tversky loss formula and parameters used - \cite{abraham2018}}
-R
-
-soft DSC loss can be recovered by setting $w_{l}$ = $\vec{1}$
 
 
-\begin{equation}
-\textrm{w. soft DSC$_{loss}$} = 1-2\frac{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln}p_{ln} + \epsilon}{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln} + p_{ln} + \epsilon} \; \;  \; \; \textbf{:} \; \; \; \; w_{l} = \frac{1}{\sum_{n=1}^{N}(r_{ln} + \epsilon)^2}
-\label{eq:method_wsdsc}
-\end{equation}
+%soft DSC loss can be recovered by setting $w_{l}$ = $\vec{1}$
 %
-\begin{equation}
-\textrm{BCE} = -\frac{1}{N}\sum_{n=1}^{N}r_{n} \; log(p_{n}) \; + \; (1-r_{n}) \; log(1-p_{n})
-\label{eq:method_bce}
-\end{equation}
-
-The Tversky index (seen in \ref{eq:method_TI}) is an extension of the dice loss designed to enforce a trade-off between false-positives and false-negatives via the tuning of the $alpha$ and $beta$ parameters \cite{Khan2019}. 
-
-\begin{equation}
-\textrm{T}(\alpha, \beta) = \frac{\sum_{l=1}^{2}r_{ln}p_{ln} + \epsilon}{
-\sum_{l=1}^{2}r_{ln}p_{ln} +
-\alpha\sum_{l=1}^{2}r_{l\bar{n}}p_{ln} +
-\beta\sum_{l=1}^{2}r_{ln}p_{l\bar{n}} + \epsilon	
-}
-\label{eq:method_TI}
-\end{equation}
-
-The focal Tversly loss is an extension of the focal cross entropy loss presented by Lin to 
-
-\begin{equation}
-\textrm{FTL}(\alpha, \beta) = \sum(1-\textrm{TL}(\alpha, \beta))^{1 / \gamma}
-\label{eq:method_TL}
-\end{equation}
+%
+%\begin{equation}
+%\textrm{w. soft DSC$_{loss}$} = 1-2\frac{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln}p_{ln} + \epsilon}{\sum_{l=1}^{2}w_{l}\sum_{n}r_{ln} + p_{ln} + \epsilon} \; \;  \; \; \textbf{:} \; \; \; \; w_{l} = \frac{1}{\sum_{n=1}^{N}(r_{ln} + \epsilon)^2}
+%\label{eq:method_wsdsc}
+%\end{equation}
+%%
+%\begin{equation}
+%\textrm{BCE} = -\frac{1}{N}\sum_{n=1}^{N}r_{n} \; log(p_{n}) \; + \; (1-r_{n}) \; log(1-p_{n})
+%\label{eq:method_bce}
+%\end{equation}
+%
+%The Tversky index (seen in \ref{eq:method_TI}) is an extension of the dice loss designed to enforce a trade-off between false-positives and false-negatives via the tuning of the $alpha$ and $beta$ parameters \cite{Khan2019}. 
+%
+%\begin{equation}
+%\textrm{T}(\alpha, \beta) = \frac{\sum_{l=1}^{2}r_{ln}p_{ln} + \epsilon}{
+%\sum_{l=1}^{2}r_{ln}p_{ln} +
+%\alpha\sum_{l=1}^{2}r_{l\bar{n}}p_{ln} +
+%\beta\sum_{l=1}^{2}r_{ln}p_{l\bar{n}} + \epsilon	
+%}
+%\label{eq:method_TI}
+%\end{equation}
+%
+%The focal Tversly loss is an extension of the focal cross entropy loss presented by Lin to 
+%
+%\begin{equation}
+%\textrm{FTL}(\alpha, \beta) = \sum(1-\textrm{TL}(\alpha, \beta))^{1 / \gamma}
+%\label{eq:method_TL}
+%\end{equation}

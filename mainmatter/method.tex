@@ -7,11 +7,8 @@ This project focused on building an automated segmentation solution for radiothe
 
 Patient scans were exported from a the Monaco treatment planning system
 to DICOM format, from which image-structure pairs were extracted, transformed from patient-space to a non-dimensional matrix-space, and saved individually as model input-output arrays for further processing. Initial modelling was attempted with contours extracted on-the-fly from DICOM files; however, this resulted in a significant CPU bottleneck which limited GPU capacity during training.
-%\todo{This could have been fixed by caching your transformations to disk. You have essentially implemented this, it's just that if it was in the cache model philosophy the model would see a DICOM file, check to see if it exist in memory, if not, check to see if it has a numpy conversion of it saved to disk, if not, then it would do the conversion, save the numpy result to disk, and store it in memory. Next time that file is needed, it would either find in memory, or if not there, saved to disk in its numpy format. In the code's current format you've essentially implemented a manual cache without supporting the original DICOM input within your pipeline.}
-
 
 In addition, any advantage of removing the intermediate file processing step (DICOM to array) was made redundant upon determining that significant data cleaning would be required for contour consistency.
-%\todo{There might be value in changing philosophy here going forwards. SASH could go through their contours within the TPS and on any slice where they are not happy with all the contours on that slice they could create a placeholder contour with the name ``ignore-this-slice'' or something equivalent. Then, that puts the ownus of datacleaning on SASH, and they can use the TPS GUI in the format they understand. Then, all your pipeline needs to do, is check a given slice to see if the ``ignore-this-slice'' exists on there. If it does, don't use that slice in your model. This method also provides an easy way for other centres to use their current data within your model. Instead of having them use custom unfamiliar software to clean the data, or require them to completely contour every slice in every exported image, just get them to add this dummy contour within their software of choice to the slices that are to be ignored.}
 For instance, vacuum bag segmentation was often incomplete in patient scans, as only clinically relevant locations included full contouring; this may satisfy clinical requirements, however, consistent labels
 %\todo{\ldots consistent labels on the slices used as inputs to the model\ldots}
 are required for machine learning. The final data pipeline was designed to handle filenames (pointing to arrays) as the primary method of matching an input with the ground truth. From here, an array for each filename was read into memory if it belonged to the current batch; this removed memory constraints on dataset size as only a single batch populated the RAM at each training step.
@@ -57,16 +54,15 @@ A total of 5 loss functions were assessed for pelvic imaging: Binary Cross entro
 
 \section{Clinical performance}
 
-Final model performance was evaluated on an independent test dataset via both DSC and sDSC metrics. Organ specific tolerance $\tau$ for rectum and bladder contours were taken as the 95th percentile absolute mean surface distance in mm between expert observers from Roach et al. \cite{Roach_2019}. MSD$_{95}$ values calculated from Roach et al. show organ-specific tolerances of 1.5 mm for the bladder, and 7.0 mm
-for the rectum.
+Final model performance was evaluated on an independent test dataset via both DSC and sDSC metrics. Organ specific tolerance $\tau$ for rectum and bladder contours were taken as the 95th percentile absolute mean surface distance in mm between expert observers from Roach et al. \cite{Roach_2019}. MSD$_{95}$ values calculated from Roach et al. show organ-specific tolerances of 1.5 mm for the bladder, and 7.0 mm for the rectum. 
 
-Literature reports that clinically acceptable agreement between expert observers is DSC $\geq$ 0.7 for the bladder and rectum \cite{Roach_2019}.
+As seen in Figure \ref{fig:pdd} a 6 MV photon beam with 10 x 10 field has a maximum dose deposition at approximately 1.4cm in water \cite{Nurdin}. Beyond this point, dose drop off can be approximated in the linear regime with a gradient of 4\% per cm or 0.4\% per mm \cite{Nurdin}. For example, a bladder border tolerance of 1.5 mm corresponds to a maximum dose differential of 0.6\%. While a rectum tolerance of 7.0 mm corresponds to a dose differential of 2.8\%. Additionally, the literature reports that clinically acceptable agreement between expert observers is a DSC $\geq$ 0.7 for the bladder and rectum \cite{Roach_2019}. These measurements and the percentage depth dose curve presented in Figure \ref{fig:pdd} were used to assess clinical acceptability of the contours produced by each model.
 
 
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{figures/pdd}
-		\caption{}
+		\caption{Percentage depth dose curve (water) for a 6 MV photon beam with 10 x 10 cm field setup. Figure redrawn from Nurdin et al. \cite{Nurdin}}
 		\label{fig:pdd}
 	\end{center}
 \end{figure}
