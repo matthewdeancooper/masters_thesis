@@ -27,8 +27,7 @@ In addition, any advantage of removing the intermediate file processing step
 cleaning would be required for contour consistency. For instance, vacuum bag
 segmentation was often incomplete in patient scans, as only clinically relevant
 locations included full contouring; this may satisfy clinical requirements,
-however, consistent labels %\todo{\ldots consistent labels on the slices used as
-inputs to the model\ldots} are required for machine learning. The final data
+however, consistent labels are required for machine learning. The final data
 pipeline was designed to handle filenames (pointing to arrays) as the primary
 method of matching an input with the ground truth. Each filename was read into
 memory if it belonged to the current batch; removing memory constraints on
