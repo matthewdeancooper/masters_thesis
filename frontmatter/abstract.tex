@@ -1,32 +1,46 @@
 \chapter{Abstract} \label{ch:abstract}
 
 \textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective
-treatment delivery in radiotherapy (RT). Current limitations in clinical practice
-include large intra and inter-observer variances (IOV), as well time delays in
-both contour generation and correction. This study designed and evaluated a 2D U-Net architecture with
-two primary aims: 
+treatment delivery in radiotherapy (RT). Current limitations in clinical
+practice include large intra and inter-observer variances (IOV), as well time
+delays in both contour generation and correction. This study designed and
+evaluated a 2D U-Net architecture with two primary aims:
 1) Develop a pelvic imaging quality assurance tool for use in
 RT, comparing model predictions with expert contours. 2) Automate vacuum bag
 segmentation for canine RT.
 
-\textbf{Method:} This study presents two independently trained models, and
+\textbf{Method:} This study presents two independently trained models and
 assesses the performance of common semantic segmentation loss functions in each
-case. The original U-Net architecture developed by Ronneberger et al. was expanded
-integrating recent network modifications that indicated improved performance in
-the literature. In addition to reporting dice similarity coefficients (DSC), organ-specific tolerances (representative of expert IOV) are utilised for bladder
-and rectum contouring in Nikolov et al's surface dice similarity coefficient
-(sDSC).
+case. The original U-Net architecture developed by Ronneberger et al. was
+expanded by integrating recent network modifications that indicated improved
+performance in the literature. In addition to reporting dice similarity
+coefficients (DSC), organ-specific tolerances (representative of expert IOV) are
+utilised for bladder and rectum contouring to quantify Nikolov et al.'s surface
+dice similarity coefficient (sDSC) - reported to have a stronger
+correlation with contour correction times when compared to traditional metrics.
+The pelvic imaging dataset consisted of 15 patients undergoing RT for prostate
+cancer, and was split into training, validation, and testing subsets of 12, 2,
+and 1, respectively. The canine imaging dataset included 21 patients selected
+from varied RT treatment groups, and was split into subsets of 21, 3, and 2,
+respectively.
 
-\textbf{Results:} Three contours were produced from pelvic imaging CT scans:
-Patient contours were measured with DSC $>0.99(0.001)$, bladder contours with
-DSC 0.86(0.2) and sDSC 0.87(0.1), and rectum contours with DSC 0.67(0.1)
-and sDSC 0.92(0.14).  Additionally, vacuum bag contours from canine imaging CT
-scans were measured with DSC 0.95(0.001). Weighted DSC was the only loss function
-that optimised for all organs considered in pelvic imaging - due to a
-significant pixel-wise class imbalance between structures.
+\textbf{Results:}\footnote{Notation: $\bar{x}(\sigma)$ corresponds to a
+measurement with mean value $\bar{x}$ and standard deviation $\sigma$.} Three
+contours were produced from pelvic CT: Patient contours were measured with DSC
+$0.998(0.001)$, bladder contours with DSC $0.9(0.2)$ and sDSC $0.9(0.2)$, and
+rectum contours with DSC $0.7(0.1)$ and sDSC $0.9(0.1)$. Vacuum bag contours
+from canine CT were measured with DSC $0.952(0.001)$. Weighted DSC was the only
+loss function that optimised for all organs considered in pelvic imaging -
+likely due to a significant pixel-wise class imbalance between structures.
 
 \textbf{Conclusion:} Patient contours did not deviate outside tolerances and are
-viable for use within the QA tool in their current form.  Bladder and rectum
-segmentation may improve with a broader dataset (19 patient scans were used).
-The vacuum bag model should proceed to acceptance testing for clinical
-implementation.
+viable for use within the QA tool in their current form. Bladder and rectum
+segmentation may improve with a broader dataset. Additionally, a 3D model may
+provide axial context to improve segmentation on rectal regions containing gas.
+In its current implementation, the surface dice similarity coefficient accept
+only binary input data; and hence, gradients are not defined when used as a cost
+function. Developing a soft surrogate may allow for the direct optimisation of
+this metric. The canine imaging model was successfully deployed to clinic under
+a prototype warning, where preliminary acceptance testing has shown a
+performance improvement of approximately 30 minutes per patient. It is currently
+being utilised on all new canine patients undergoing RT.

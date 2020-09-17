@@ -1,8 +1,7 @@
 (TeX-add-style-hook
- "introduction"
+ "data_vet"
  (lambda ()
    (LaTeX-add-labels
-    "ch:introduction"
-    "fig:contour"))
+    "table:data_vet"))
  :latex)
 

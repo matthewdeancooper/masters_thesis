@@ -1,8 +1,7 @@
 (TeX-add-style-hook
- "introduction"
+ "metrics"
  (lambda ()
    (LaTeX-add-labels
-    "ch:introduction"
-    "fig:contour"))
+    "table:organ"))
  :latex)
 

@@ -1,21 +1,7 @@
-%\documentclass[a4paper, 12pt, twoside,parskip=half]{scrbook} 
+% \documentclass[a4paper, 12pt, twoside,parskip=half]{scrbook} 
 \documentclass[a4paper,oneside, 12pt,parskip=half]{scrbook} 
-
-% Increase margins to make todo items more readable during review
-% process.
-
-% === OLD VALUE ===
  \usepackage[left=2cm, right=2cm, bottom=2cm, top=2cm]{geometry}
 
-% === SB Addition for review ===
-%\usepackage[left=2cm, right=9.5cm, bottom=6cm, top=2cm, marginparwidth=9cm]{geometry}
-%\usepackage{setspace}
-%\doublespacing
-
-
-
-% \usepackage{showframe}
-% ==============================
 
 
 \usepackage[pdftex, breaklinks, colorlinks, citecolor=blue, urlcolor=blue]{hyperref}
@@ -30,6 +16,7 @@
 \fancyhead[OL]{\rightmark}
 \fancyhead[OR]{\thepage}
 \usepackage{etoolbox}
+
 % % add bib to toc
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage[bibencoding=utf8, sorting=none]{biblatex} 
@@ -73,8 +60,10 @@
 \captionsetup[figure]{font=footnotesize}
 
 
-% % ================= FRONT MATTER ================================
+
 \begin{document}
+
+% % ================= TITLE MATTER ================================
 \begin{titlepage}
 
 \begin{center}
@@ -82,12 +71,16 @@
 \end{center}
 	\vspace{2cm}
 \begin{center}
-	\LARGE\textbf{Clinical application of deep learning: \\ Automatic contouring via U-Net architecture}
+	\LARGE\textbf{Clinical application of deep learning:}
+
+	\LARGE\textbf{Automatic contouring via U-Net architecture}
+
 	\vfill
 
 	% Set font back to normal size
 	\normalsize
   \large{\textbf{Matthew Cooper}}
+
   \vfill
 	
 	\normalsize
@@ -111,39 +104,34 @@
 	
 	The University of Sydney
 	
-\vspace{1cm}
-June 2020
+  \vspace{3cm}
+  Revised September 2020
+
 	\vfill
   \end{center}
+
 \end{titlepage}
 
-\frontmatter
-% % Table of contents: 4 (Only on page counts towards limit)
-\tableofcontents
-% % Abstract: page 2 - 200w or less
-\include{frontmatter/abstract}
+% % ================= FRONT MATTER =========================
 
+\frontmatter
+\tableofcontents
+\include{frontmatter/abstract}
 \include{frontmatter/acknowledgements}
 \include{frontmatter/contribution}
-% % List of tables and figures: 4 (Does not count towards limit)
 \listoffigures
 \listoftables
 
 % % ================= MAIN MATTER =========================
-\mainmatter
 % Remove page numbering for new chapter pages
 \fancypagestyle{plain}{%
   \renewcommand{\headrulewidth}{0pt}%
   \fancyhf{}%
 }
 
-% Introduction: 1-2 pages 
-% Present background, motivation and rationale of project
+\mainmatter
 \include{mainmatter/introduction}
-% Literature review: Max 8 pages. T/f 6-8.
-% A comprehensive review of relevant literature
 \include{mainmatter/literature}
-% Main body: 35 - intro (1-2) - lit (6-8) = 25-28
 \include{mainmatter/theory}
 \include{mainmatter/method}
 \include{mainmatter/results}
@@ -151,12 +139,6 @@ June 2020
 
 % % ================= BACK MATTER =========================
 \backmatter
-% BIBLIOGRAPHY 
 \small{\printbibliography[title=References]}
-  %\bibliography{/home/matthew/masters_articles/references.bib}
-  %\bibliographystyle{ieeetr}
-% APPENDIX
-% \appendix
-%\include{backmatter/appendix}
 
 \end{document}

@@ -1,8 +1,7 @@
 (TeX-add-style-hook
- "introduction"
+ "contribution"
  (lambda ()
    (LaTeX-add-labels
-    "ch:introduction"
-    "fig:contour"))
+    "ch:contribution"))
  :latex)
 

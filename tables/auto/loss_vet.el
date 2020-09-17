@@ -1,8 +1,7 @@
 (TeX-add-style-hook
- "introduction"
+ "loss_vet"
  (lambda ()
    (LaTeX-add-labels
-    "ch:introduction"
-    "fig:contour"))
+    "table:loss_vet"))
  :latex)
 
