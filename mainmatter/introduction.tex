@@ -6,20 +6,19 @@ Approximately 18 million patients are diagnosed with cancer each year
 benefit from radiotherapy (RT) for curative or palliative management of disease
 (optimal radiotherapy utilisation rate) \cite{Barton2014}. Treatment planning
 for RT involves the optimisation of beam quality, field arrangements, dose
-distributions, and fractionation schedules, to both maximise tumour
-control probability and minimise normal tissue complication probability - 
-maximising the therapeutic ratio of treatment \cite{iaea2016}. Contouring (or
-delineation) is a critical aspect of treatment planning that describes the
-process of defining and classifying anatomical regions-of-interest (ROIs) within
-a patient from medical imaging data \cite{iaea2016}. Regions include: target
-volumes for treatment, associated error margins; as well as normal tissue
-regions (organs at risk - OARs) for which exposure needs to be minimised to
-avoid adverse side-effects of treatment \cite{iaea2016}. Once ROIs are
-delineated, they are used within the treatment planning system for the
-calculation of an optimum dose distribution (as seen in Figure
-\ref{fig:contour}). Therefore, contours are part of the primary geometry used to
-optimise treatment outcomes; and as such, accurate contouring is fundamental to
-the efficacy of RT \cite{Nikolov_2018}.
+distributions, and fractionation schedules, to both maximise tumour control
+probability and minimise normal tissue complication probability - maximising the
+therapeutic ratio of treatment \cite{iaea2016}. Contouring (or delineation) is a
+critical aspect of treatment planning that describes the process of defining and
+classifying anatomical regions-of-interest (ROIs) within a patient from medical
+imaging data \cite{iaea2016}. Regions include: target volumes for treatment,
+associated error margins; as well as normal tissue regions (organs at risk -
+OARs) for which exposure needs to be minimised to avoid adverse side-effects of
+treatment \cite{iaea2016}. Once ROIs are delineated, they are used within the
+treatment planning system for the calculation of an optimum dose distribution
+(as seen in Figure \ref{fig:contour}). Therefore, contours are part of the
+primary geometry used to optimise treatment outcomes; and as such, accurate
+contouring is fundamental to the efficacy of RT \cite{Nikolov_2018}.
 
 \begin{figure}[h]
 	\begin{center}
@@ -50,7 +49,7 @@ with poor contrast for border differentiation, or high variability in size or lo
 - such as pelvic OARs in prostate and cervical cancer \cite{Schreier_2020,
 Liu_2020}. Critically, current automatic solutions still present a barrier to
 the adoption of future technologies that would require fast and accurate
-contouring \cite{Nikolov_2018}. For instance, adaptive radiotherapy has shown
+contouring \cite{Nikolov_2018}. For instance, adaptive radiotherapy has the 
 potential to deliver a new standard of care for RT patients by updating
 treatment plans to daily changes in patient anatomy \cite{Nikolov_2018}.
 
@@ -58,15 +57,15 @@ In contrast, deep-learning (DL) algorithms have shown significant performance
 improvements over atlas methods both in terms of accuracy and time for contour
 generation \cite{Liu_2020}. However, the implementation of DL models in clinical
 environments remains challenging; particularly due to limitations in
-quantitatively assessing model performance in comparison to expert performance
-and IOV \cite{Nikolov_2018}. Typical metrics used to quantify the similarity
-between model and expert contours are volumetric in nature, hence volume overlap
-tends to be the focus of evaluation and model optimisation \cite{Nikolov_2018}.
-Recent studies have introduced surface-based performance metrics that aim to
-provide direct information on the fraction of surface points that require
-correction to be within IOV tolerances (specific to each OAR)
-\cite{Nikolov_2018, Vaassen_2020}, and may provide a stronger correlation with
-time required for contour correction \cite{Vaassen_2020}.
+quantitatively assessing model performance in comparison to experts and IOV
+\cite{Nikolov_2018}. Typical metrics used to quantify the similarity between
+model and expert contours are volumetric in nature, hence volume overlap tends
+to be the focus of evaluation and model optimisation \cite{Nikolov_2018}. Recent
+studies have introduced surface-based performance metrics that aim to provide
+direct information on the fraction of surface points that require correction to
+be within IOV tolerances (specific to each OAR) \cite{Nikolov_2018,
+  Vaassen_2020}, and may provide a stronger correlation with time required for
+contour correction \cite{Vaassen_2020}.
 
 U-Net is a type of deep-learning architecture that leverages multi-resolution
 analysis to perform state-of-the-art segmentation in medical imaging research
@@ -76,18 +75,18 @@ RT.
 
 \section{Aim}
 
-
 \textbf{Model 1 - Pelvic imaging QA tool}
 
-Model 1 was designed to fulfil the need for IOV comparisons to become part of
-regular quality assurance for contour generation \cite{Vinod_2016}; and, to
-evaluate the ability of a U-Net architecture to achieve expert level performance
-- as defined by Nikolov et al.'s surface dice similarity coefficient (sDSC)
-\cite{Nikolov_2018}. This study focused on pelvic CT, automatically
-contouring the patient, bladder and rectum volumes. These organs were selected
-for their relative ease of contouring when compared to other structures (i.e. head
-and neck) \cite{Wong2020}, with the intent to act as a template for future work
-extending to other organs.
+Model 1 was designed to fulfil the need for contour generation to become part of
+regular quality assurance \cite{Vinod_2016}, by using model contours to assess
+expert contours and alert practitioners if gross contouring errors have
+occurred. Secondly, to evaluate the ability of a U-Net architecture to achieve
+expert level performance - as defined by Nikolov et al.'s surface dice
+similarity coefficient (sDSC) \cite{Nikolov_2018}. This study focused on pelvic
+CT, automatically contouring the patient, bladder and rectum volumes. These
+organs were selected for their relative ease of contouring when compared to
+other structures (i.e. head and neck) \cite{Wong2020}, with the intent to act as
+a template for future work extending to other organs.
 
 \textbf{Model 2 - Automatic segmentation of vacuum bag structures in canine
 imaging}
