@@ -36,8 +36,8 @@ due to a significant pixel-wise class imbalance between structures.
 viable for use within the QA tool in their current form. Bladder and rectum
 segmentation may improve with a broader dataset. Additionally, a 3D model may
 provide axial context to improve segmentation on rectal regions containing gas.
-In its current implementation, the surface dice similarity coefficient accept
-only binary input data; and hence, gradients are not defined when used as a cost
+In its current implementation, the surface dice similarity coefficient accepts
+only binary input data; hence, gradients are not defined when used as a cost
 function. Developing a soft surrogate may allow for the direct optimisation of
 this metric. The canine imaging model was successfully deployed to clinic under
 a prototype warning, where preliminary acceptance testing has shown a
