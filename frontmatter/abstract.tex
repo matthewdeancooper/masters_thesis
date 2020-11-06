@@ -2,12 +2,11 @@
 
 \textbf{Purpose:} Accurate contouring is a critical aspect of safe and effective
 treatment delivery in radiotherapy (RT). Current limitations in clinical
-practice include large intra and inter-observer variances (IOV), as well time
+practice include large intra and inter-observer variances (IOV), as well as time
 delays in both contour generation and correction. This study designed and
-evaluated a 2D U-Net architecture with two primary aims:
-1) Develop a pelvic imaging quality assurance tool for use in
-RT, comparing model predictions with expert contours. 2) Automate vacuum bag
-segmentation for canine RT.
+evaluated a 2D U-Net architecture with two primary aims: 1) Develop a pelvic
+imaging quality assurance tool for use in RT, comparing model predictions with
+expert contours. 2) Automate vacuum bag segmentation for canine RT.
 
 \textbf{Method:} This study presents two independently trained models and
 assesses the performance of common semantic segmentation loss functions in each
@@ -32,8 +31,8 @@ from canine CT were measured with DSC $0.952(0.001)$. Weighted DSC was the only
 loss function that optimised for all organs considered in pelvic imaging -
 due to a significant pixel-wise class imbalance between structures.
 
-\textbf{Conclusion:} Patient contours did not deviate outside tolerances and are
-viable for use within the QA tool in their current form. Bladder and rectum
+\textbf{Conclusion:} Patient contours did not deviate outside of tolerances and
+are viable for use within the QA tool in their current form. Bladder and rectum
 segmentation may improve with a broader dataset. Additionally, a 3D model may
 provide axial context to improve segmentation on rectal regions containing gas.
 In its current implementation, the surface dice similarity coefficient accepts
