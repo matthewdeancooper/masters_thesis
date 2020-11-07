@@ -58,4 +58,4 @@ minutes per patient. It is currently being utilised on all new canine patients
 undergoing RT.
 
 
-* Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
+***** Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
