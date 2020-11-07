@@ -9,7 +9,7 @@ This thesis is a living document; therefore, grammatical errors and mistakes
 have become more likely than when originally submitted. Please feel free to
 raise an issue if you observe anything that requires attention.
 
-## Abstract^1
+## Abstract
 
 **Introduction:** Accurate contouring is a critical aspect of safe and effective
 treatment delivery in radiotherapy (RT). Current limitations in clinical
@@ -37,7 +37,7 @@ was split into training, validation, and testing subsets of 12, 2, and 1,
 respectively. The canine imaging dataset included 26 patients selected from
 varied RT treatment groups, split into subsets of 21, 3, and 2, respectively.
 
-**Results:*** Three contours were produced from pelvic CT: Patient contours were
+**Results:**<sup>1</sup> Three contours were produced from pelvic CT: Patient contours were
 measured with DSC 0.998(0.001), bladder contours with DSC 0.9(0.2) and sDSC
 0.9(0.2), and rectum contours with DSC 0.7(0.1) and sDSC 0.9(0.1). Vacuum bag
 contours from canine CT were measured with DSC 0.952(0.001). Weighted DSC was
@@ -58,4 +58,4 @@ minutes per patient. It is currently being utilised on all new canine patients
 undergoing RT.
 
 
-***** Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
+1. Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
