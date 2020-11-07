@@ -2,8 +2,8 @@
 
 A compiled pdf is available: `masters_thesis/main.pdf`
 
-A video overview of the clinical implementation is available:\\
-\href{https://docs.pymedphys.com/background/autocontouring.html}{docs.pymedphys/com/background/autocontouring**
+A video overview of the clinical implementation is available:
+[docs.pymedphys/com/background/autocontouring](https://docs.pymedphys.com/background/autocontouring.html)
 
 This thesis is a living document; therefore, grammatical errors and mistakes
 have become more likely than when originally submitted. Please feel free to
