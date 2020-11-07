@@ -57,5 +57,5 @@ acceptance testing has shown a performance improvement of approximately 30
 minutes per patient. It is currently being utilised on all new canine patients
 undergoing RT.
 
-
+---
 1. Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
