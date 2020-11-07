@@ -59,3 +59,13 @@ undergoing RT.
 
 ---
 1. Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
+
+## BibTex entry
+    @mastersthesis{CitekeyMastersthesis,
+      author  = "Jian Tang",
+      title   = "Spin structure of the nucleon in the asymptotic limit",
+      school  = "Massachusetts Institute of Technology",
+      year    = 1996,
+      address = "Cambridge, MA",
+      month   = sep
+    }
