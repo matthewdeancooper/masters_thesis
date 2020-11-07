@@ -61,11 +61,11 @@ undergoing RT.
 1. Notation: x̄(σ) corresponds to a measurement with mean value x̄ and standard deviation σ.
 
 ## BibTex entry
-    @mastersthesis{CitekeyMastersthesis,
-      author  = "Jian Tang",
-      title   = "Spin structure of the nucleon in the asymptotic limit",
-      school  = "Massachusetts Institute of Technology",
-      year    = 1996,
-      address = "Cambridge, MA",
-      month   = sep
+    @mastersthesis{Cooper2020,
+      author  = "Matthew Cooper",
+      title   = "Clinical application of deep learning: Automatic contouring via U-Net architecture",
+      school  = "Institute of Medical Physics, The University of Sydney",
+      year    = 2020,
+      address = "Camperdown, NSW",
+      month   = Jul
     }
