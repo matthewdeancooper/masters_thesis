@@ -1,5 +1,4 @@
-# A Clinical implementation of deep learning: 
-# Automatic contouring via U-Net architecture
+# A Clinical implementation of deep learning: <br> Automatic contouring via U-Net architecture
 
 A compiled pdf is available: `masters_thesis/main.pdf`
 
