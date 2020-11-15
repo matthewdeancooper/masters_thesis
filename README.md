@@ -31,7 +31,7 @@ the literature. In addition to reporting dice similarity coefficients (DSC),
 organ-specific tolerances (representative of expert IOV) are utilised for
 bladder and rectum contouring to quantify Nikolov et al.'s surface dice
 similarity coefficient (sDSC) - reported to have a stronger correlation with
-contour correction times when compared to traditional metrics. The pelvic
+contour correction time when compared to traditional metrics. The pelvic
 imaging dataset consisted of 15 patients undergoing RT for prostate cancer, and
 was split into training, validation, and testing subsets of 12, 2, and 1,
 respectively. The canine imaging dataset included 26 patients selected from
