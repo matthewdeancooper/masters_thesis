@@ -23,7 +23,7 @@ imaging quality QA tool for use in RT, comparing model predictions with expert
 contours to identify macro contouring errors. 2) Automate vacuum bag
 segmentation for canine RT.
 
-**Methods:** This study presents two independently trained models and assesses the
+**Method:** This study presents two independently trained models and assesses the
 performance of common semantic segmentation loss functions in each case. The
 original U-Net architecture developed by Ronneberger et al. was expanded by
 integrating recent network modifications that indicated improved performance in
