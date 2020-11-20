@@ -19,7 +19,7 @@ risk assessment recommendations highlight multiple human-factor failure modes in
 RT. An automated contour quality assurance (QA) review has the potential to
 manage some prominent hazards identified by the task group. This study designed
 and evaluated a 2D U-Net architecture with two primary aims: 1) Develop a pelvic
-imaging quality QA tool for use in RT, comparing model predictions with expert
+imaging QA tool for use in RT, comparing model predictions with expert
 contours to identify macro contouring errors. 2) Automate vacuum bag
 segmentation for canine RT.
 
