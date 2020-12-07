@@ -5,7 +5,7 @@ A compiled pdf is available: `masters_thesis/main.pdf`
 A video overview of the clinical implementation is available:
 [docs.pymedphys/com/background/autocontouring](https://docs.pymedphys.com/background/autocontouring.html)
 
-Adapted presentation for the ACPSEM MedPhys20 research symposium.
+Presentation for ACPSEM MedPhys20 research symposium:
 [matthewdeancooper/masters_presentation_short](https://github.com/matthewdeancooper/masters_presentation_short)
 
 This thesis is a living document; therefore, grammatical errors and mistakes
