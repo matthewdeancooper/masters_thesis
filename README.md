@@ -1,6 +1,7 @@
 # Clinical application of deep learning: <br> Automatic contouring via U-Net architecture
 
-A compiled pdf is available: `masters_thesis/main.pdf`
+A compiled pdf is available:
+[masters_thesis/main.pdf](https://github.com/matthewdeancooper/masters_presentation_short/blob/main/main.pdf)
 
 A video overview of the clinical implementation is available:
 [docs.pymedphys/com/background/autocontouring](https://docs.pymedphys.com/background/autocontouring.html)
