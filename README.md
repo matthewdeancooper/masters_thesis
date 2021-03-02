@@ -3,12 +3,6 @@
 A compiled pdf is available:
 [masters_thesis/main.pdf](https://github.com/matthewdeancooper/masters_thesis/blob/master/main.pdf)
 
-A video overview of the clinical implementation is available:
-[docs.pymedphys/com/background/autocontouring](https://docs.pymedphys.com/background/autocontouring.html)
-
-Presentation for ACPSEM MedPhys20 research symposium:
-[github.com/matthewdeancooper/masters_presentation_short](https://github.com/matthewdeancooper/masters_presentation_short)
-
 This thesis is a living document; therefore, grammatical errors and mistakes
 have become more likely than when originally submitted. Please feel free to
 raise an issue if you observe anything that requires attention.
